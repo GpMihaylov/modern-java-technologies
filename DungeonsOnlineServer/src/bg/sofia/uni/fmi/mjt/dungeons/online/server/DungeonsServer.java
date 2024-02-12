@@ -2,6 +2,7 @@ package bg.sofia.uni.fmi.mjt.dungeons.online.server;
 
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.command.manager.CommandCreator;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.command.manager.CommandExecutor;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.command.response.CommandResponse;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.DungeonMap;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.MapVisualizer;
 
@@ -15,7 +16,8 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DungeonsServer {
 
@@ -31,12 +33,12 @@ public class DungeonsServer {
     private ByteBuffer buffer;
     private Selector selector;
 
-    private final CopyOnWriteArrayList<SocketChannel> connectedClients;
+    private final Map<String, SocketChannel> connectedClients;
 
     public DungeonsServer(int port, CommandExecutor commandExecutor) {
         this.port = port;
         this.commandExecutor = commandExecutor;
-        connectedClients = new CopyOnWriteArrayList<>();
+        connectedClients = new ConcurrentHashMap<>();
     }
 
     public static void main(String... args) {
@@ -68,9 +70,14 @@ public class DungeonsServer {
                                 continue;
                             }
 
-                            String output = commandExecutor
+//                            String output = commandExecutor
+//                                .execute(CommandCreator.newCommand(clientInput), clientChannel);
+//                            writeClientOutput(clientChannel, output);
+
+                            CommandResponse response = commandExecutor
                                 .execute(CommandCreator.newCommand(clientInput), clientChannel);
-                            writeClientOutput(clientChannel, output);
+
+                            writeOutput(response);
 
                             broadcastMap();
                         } else if (key.isAcceptable()) {
@@ -119,11 +126,28 @@ public class DungeonsServer {
 
     private void disconnectClient(SocketChannel clientChannel) throws IOException {
         System.out.println(clientChannel.socket().getRemoteSocketAddress() + " disconnected from server!");
-        clientChannel.close();
-        connectedClients.remove(clientChannel);
 
         String id = clientChannel.socket().getRemoteSocketAddress().toString();
+        connectedClients.remove(id);
         DungeonMap.getInstance().removePlayer(id);
+
+        clientChannel.close();
+
+    }
+
+    private void writeOutput(CommandResponse response) {
+        for (Map.Entry<String, String> entry : response.getResponses().entrySet()) {
+            String id = entry.getKey();
+            String clientResponse = entry.getValue();
+
+            SocketChannel clientChannel = connectedClients.get(id);
+
+            try {
+                writeClientOutput(clientChannel, clientResponse);
+            } catch (IOException e) {
+                System.out.println("Error sending response to client " + id + ": " + e.getMessage());
+            }
+        }
     }
 
     private void writeClientOutput(SocketChannel clientChannel, String output) throws IOException {
@@ -132,6 +156,25 @@ public class DungeonsServer {
         buffer.flip();
 
         clientChannel.write(buffer);
+    }
+
+    private void broadcastMap() {
+        String mapAsString = MapVisualizer.getMapAsString();
+        byte[] mapBytes = mapAsString.getBytes(StandardCharsets.UTF_8);
+
+        buffer.clear();
+        buffer.put(mapBytes);
+        buffer.flip();
+
+        for (SocketChannel clientChannel : connectedClients.values()) {
+            try {
+                clientChannel.write(buffer);
+            } catch (IOException e) {
+                System.out.println("Error broadcasting map to client: " + e.getMessage());
+            }
+            buffer.rewind();
+        }
+
     }
 
     private void accept(Selector selector, SelectionKey key) throws IOException {
@@ -143,29 +186,11 @@ public class DungeonsServer {
         accept.configureBlocking(false)
             .register(selector, SelectionKey.OP_READ);
 
-        connectedClients.add(accept);
-
         String id = accept.socket().getRemoteSocketAddress().toString();
+
+        connectedClients.put(id, accept);
+
         DungeonMap.getInstance().addPlayer(id);
-    }
-
-    private void broadcastMap() {
-        String mapAsString = MapVisualizer.getMapAsString();
-        byte[] mapBytes = mapAsString.getBytes(StandardCharsets.UTF_8);
-
-        buffer.clear();
-        buffer.put(mapBytes);
-        buffer.flip();
-
-        for (SocketChannel clientChannel : connectedClients) {
-            try {
-                clientChannel.write(buffer);
-            } catch (IOException e) {
-                System.out.println("Error broadcasting map to client: " + e.getMessage());
-            }
-            buffer.rewind();
-        }
-
     }
 
 }

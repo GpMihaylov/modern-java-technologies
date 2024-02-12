@@ -29,6 +29,7 @@ public class DungeonMap {
         initMap();
         players = new HashMap<>();
         playerNumbers = new HashMap<>();
+        minions = new HashMap<>();
     }
 
     public static DungeonMap getInstance() {

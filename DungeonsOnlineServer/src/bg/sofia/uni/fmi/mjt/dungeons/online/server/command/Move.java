@@ -1,14 +1,20 @@
 package bg.sofia.uni.fmi.mjt.dungeons.online.server.command;
 
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.command.response.CommandResponse;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.Player;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.Position;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.DungeonMap;
 
 public class Move {
 
-    public static String execute(String id, String... args) {
+    private static final String MISSING_COMMAND = "Missing command argument\n";
+    private static final String INVALID_COMMAND = "Invalid command\n";
+    private static final String SUCCESS = "You successfully moved %s\n";
+    private static final String FAILURE = "Cannot move in that direction\n";
+
+    public static CommandResponse execute(String id, String... args) {
         if (areArgsValid(args)) {
-            return "Missing command argument\n";
+            return CommandResponse.of(id, MISSING_COMMAND);
         }
 
         Player player = DungeonMap.getInstance().getPlayer(id);
@@ -19,16 +25,16 @@ public class Move {
 
         Position newPosition = calculateNewPosition(player, direction);
         if (newPosition == null) {
-            return "Invalid command\n";
+            return CommandResponse.of(id, INVALID_COMMAND);
         }
 
         if (isValidPosition(newPosition)) {
             player.setPosition(newPosition);
             DungeonMap.getInstance().updatePlayerPosition(id, oldPosition, newPosition);
 
-            return "Moved player " + id + " " + direction + "\n";
+            return CommandResponse.of(id, String.format(SUCCESS, direction));
         } else {
-            return "Cannot move in that direction\n";
+            return CommandResponse.of(id, FAILURE);
         }
     }
 
@@ -49,6 +55,7 @@ public class Move {
             case "left" -> newY--;
             case "right" -> newY++;
             default -> {
+                //todo handle better?
                 return null;
             }
         }
