@@ -1,13 +1,14 @@
 package bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map;
 
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.Minion;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.Player;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.Position;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.field.Field;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.field.FieldType;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class DungeonMap {
 
@@ -15,11 +16,13 @@ public class DungeonMap {
 
     public static final int WIDTH = 6;
     public static final int HEIGHT = 6;
+    public static final int MINION_COUNT = 3;
 
     private final Field[][] map;
 
     private Map<String, Player> players;
     private Map<String, Integer> playerNumbers;
+    private Map<Position, Minion> minions;
 
     private DungeonMap() {
         map = new Field[WIDTH][HEIGHT];
@@ -47,8 +50,8 @@ public class DungeonMap {
         }
     }
 
-    public String getFieldSymbol(int x, int y) {
-        return map[x][y].toString();
+    public Field getField(Position p) {
+        return map[p.getX()][p.getY()];
     }
 
     public void addPlayer(String id) {
@@ -74,11 +77,17 @@ public class DungeonMap {
     }
 
     public Player getPlayer(String id) {
+        validateId(id);
         return players.get(id);
     }
 
-    public boolean isObstacle(int x, int y) {
-        return map[x][y].getType().equals(FieldType.OBSTACLE);
+    public Integer getPlayerNumber(String id) {
+        validateId(id);
+        return playerNumbers.get(id);
+    }
+
+    public boolean isObstacle(Position p) {
+        return map[p.getX()][p.getY()].getType().equals(FieldType.OBSTACLE);
     }
 
     public void updatePlayerPosition(String id, Position oldPosition, Position newPosition) {
@@ -91,19 +100,32 @@ public class DungeonMap {
         setFieldTypeAfterMovement(oldPosition);
     }
 
-    private void setFieldTypeAfterMovement(Position oldPosition) {
-        Optional<Player> player = players.values().stream()
-            .filter(p -> p.getPosition().equals(oldPosition))
-            .findFirst();
+    //todo validation of position
 
-        if (player.isPresent()) {
-            Integer playerNumber = playerNumbers.get(player.get().getId());
+    private void setFieldTypeAfterMovement(Position oldPosition) {
+        List<Player> playersOnPosition = getPlayersOnPosition(oldPosition);
+
+        if (!playersOnPosition.isEmpty()) {
+            Integer playerNumber = playerNumbers.get(playersOnPosition.getFirst().getId());
             map[oldPosition.getX()][oldPosition.getY()]
                 .setType(FieldType.valueOf("PLAYER" + playerNumber));
         } else {
             map[oldPosition.getX()][oldPosition.getY()]
                 .setType(FieldType.EMPTY_SPACE);
         }
+    }
+
+    public List<Player> getPlayersOnPosition(Position position) {
+        return players.values().stream()
+            .filter(p -> p.getPosition().equals(position)).toList();
+    }
+
+    public boolean isMinionOnPosition(Position position) {
+        return minions.containsKey(position);
+    }
+
+    public Minion getMinionOnPosition(Position position) {
+        return minions.get(position);
     }
 
 }

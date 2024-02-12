@@ -1,5 +1,7 @@
 package bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map;
 
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.Position;
+
 public class MapVisualizer {
 
     public static String getMapAsString() {
@@ -7,8 +9,8 @@ public class MapVisualizer {
 
         for (int i = 0; i < DungeonMap.WIDTH; i++) {
             for (int j = 0; j < DungeonMap.HEIGHT; j++) {
-
-                mapString.append(DungeonMap.getInstance().getFieldSymbol(i, j)).append(" ");
+                Position position = new Position(i, j);
+                mapString.append(DungeonMap.getInstance().getField(position).toString()).append(" ");
             }
             mapString.append(System.lineSeparator());
         }

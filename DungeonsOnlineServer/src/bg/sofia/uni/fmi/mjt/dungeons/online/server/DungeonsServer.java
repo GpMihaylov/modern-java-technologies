@@ -1,8 +1,7 @@
 package bg.sofia.uni.fmi.mjt.dungeons.online.server;
 
-import bg.sofia.uni.fmi.mjt.dungeons.online.server.command.CommandCreator;
-import bg.sofia.uni.fmi.mjt.dungeons.online.server.command.CommandExecutor;
-import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.Player;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.command.manager.CommandCreator;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.command.manager.CommandExecutor;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.DungeonMap;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.MapVisualizer;
 

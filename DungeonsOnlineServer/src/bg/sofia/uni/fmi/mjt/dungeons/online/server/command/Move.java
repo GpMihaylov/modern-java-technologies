@@ -58,7 +58,7 @@ public class Move {
     private static boolean isValidPosition(Position position) {
         return position.getX() >= 0 && position.getX() < DungeonMap.WIDTH &&
             position.getY() >= 0 && position.getY() < DungeonMap.HEIGHT &&
-            !DungeonMap.getInstance().isObstacle(position.getX(), position.getY());
+            !DungeonMap.getInstance().isObstacle(position);
     }
 
 }
