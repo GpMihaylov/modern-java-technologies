@@ -1,6 +1,6 @@
 package bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor;
 
-import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.DungeonMap;
+import java.util.Objects;
 
 public class Position {
 
@@ -26,5 +26,23 @@ public class Position {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    @Override
+    public String toString() {
+        return "x: " + x + " y: " + y;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Position position = (Position) o;
+        return x == position.x && y == position.y;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 }
