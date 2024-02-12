@@ -1,4 +1,4 @@
-package bg.sofia.uni.fmi.mjt.dungeons.online.server.command;
+package bg.sofia.uni.fmi.mjt.dungeons.online.server.command.manager;
 
 import java.util.ArrayList;
 import java.util.List;
