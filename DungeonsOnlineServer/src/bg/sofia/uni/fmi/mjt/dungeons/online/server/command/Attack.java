@@ -9,6 +9,12 @@ import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.DungeonMap;
 import java.util.List;
 
 public class Attack {
+
+    private static final String MISS = "You did not hit anything!\n";
+    private static final String SUCCESSFUL_HIT = "Attack successful, targets hit: %s\n";
+    private static final String DEFENDER_HIT = "You were attacked by %s! You lose %s health!\n";
+
+
     public static CommandResponse execute(String id) {
         DungeonMap map = DungeonMap.getInstance();
 
@@ -25,10 +31,11 @@ public class Attack {
         targetsHit += hitMinion(map, position, attackStat);
 
         if (targetsHit == 0) {
-            return CommandResponse.of(id, "You did not hit anything!\n");
+            return CommandResponse.of(id, MISS);
         }
 
-        response.addResponse(id, "Attack successful, targets hit: " + targetsHit + "\n");
+        response.addResponse(id, String.format(SUCCESSFUL_HIT, targetsHit))
+            .attachHeader(id);
         return response;
     }
 
@@ -42,8 +49,10 @@ public class Attack {
                 continue;
             }
             defender.loseHealth(attackStat);
-            response.addResponse(defender.getId(), "You were attacked by " + attackerNumber
-                + "! You lose " + attackStat + " health!\n");
+            int lostHealth = attackStat - defender.getStats().getDefense();
+            response.addResponse(defender.getId(),
+                    String.format(DEFENDER_HIT, attackerNumber, lostHealth))
+                .attachHeader(defender.getId());
             hits++;
         }
         return hits;

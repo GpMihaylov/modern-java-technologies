@@ -54,4 +54,12 @@ public class Stats {
         this.defense = defense;
     }
 
+    @Override
+    public String toString() {
+        return "Player stats:\n" +
+            "health: " + health +
+            "\t mana:" + mana +
+            "\n attack:" + attack +
+            "\t defense:" + defense + "\n";
+    }
 }
