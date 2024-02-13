@@ -1,7 +1,9 @@
 package bg.sofia.uni.fmi.mjt.dungeons.online.server.command;
 
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.command.response.CommandResponse;
+
 public class Stats {
-    public static String execute() {
-        throw new UnsupportedOperationException("not implemented");
+    public static CommandResponse execute(String id) {
+        return new CommandResponse().attachStatsHeader(id);
     }
 }

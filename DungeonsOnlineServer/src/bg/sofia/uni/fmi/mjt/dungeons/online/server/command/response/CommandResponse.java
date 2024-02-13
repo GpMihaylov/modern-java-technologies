@@ -36,7 +36,7 @@ public class CommandResponse {
         return responses;
     }
 
-    public CommandResponse attachHeader(String id) {
+    public CommandResponse attachStatsHeader(String id) {
         String stats = DungeonMap.getInstance().getPlayerStats(id).toString();
         return addResponse(id, stats);
     }

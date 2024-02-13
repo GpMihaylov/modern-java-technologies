@@ -38,7 +38,7 @@ public class CommandExecutor {
 //            case DROP -> Drop.execute();
             case USE -> Use.execute(id, cmd.arguments());
             case ATTACK -> Attack.execute(id);
-//            case STATS -> Stats.execute();
+            case STATS -> Stats.execute(id);
             case INVENTORY -> Inventory.execute(id);
 //            case SEND -> Send.execute();
 //            case QUIT -> Quit.execute();

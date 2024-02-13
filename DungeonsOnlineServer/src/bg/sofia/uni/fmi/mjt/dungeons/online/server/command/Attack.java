@@ -31,7 +31,7 @@ public class Attack {
             return CommandResponse.of(id, MISS);
         }
 
-        response.attachHeader(id);
+        response.attachStatsHeader(id);
         return response;
     }
 
@@ -55,7 +55,7 @@ public class Attack {
 
             response.addResponse(defender.getId(),
                     String.format(DEFENDER_HIT, attackerNumber, lostHealth))
-                .attachHeader(defender.getId());
+                .attachStatsHeader(defender.getId());
 
             response.addResponse(attacker.getId(),
                 String.format(DAMAGE_DEALT, lostHealth, defenderNumber));
