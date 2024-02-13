@@ -1,6 +1,8 @@
 package bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor;
 
-public class Minion extends Actor {
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Stats;
+
+public class Minion extends AbstractActor {
     private static final int BASE_HEALTH = 20;
     private static final int BASE_DEFENSE = 5;
     private static final int BASE_LEVEL = 1;

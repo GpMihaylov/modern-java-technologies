@@ -4,7 +4,7 @@ import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.spell.Spell;
 
 public class ManaPotion extends Spell {
 
-    int manaPoints;
+    private int manaPoints;
 
     public ManaPotion(int level, int manaCost, int manaPoints) {
         super(level, manaCost);

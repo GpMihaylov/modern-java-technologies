@@ -1,29 +1,18 @@
 package bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor;
 
-public abstract class Actor {
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Position;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Stats;
 
-    protected Position position;
-    protected Stats stats;
+public interface Actor {
 
-    protected abstract void initBaseStats();
+    void loseHealth(int amount);
 
-    public abstract void loseHealth(int amount);
+    void levelUp();
 
-    public abstract void levelUp();
+    Position getPosition();
 
-    protected abstract void updateStats();
+    Stats getStats();
 
-    public Position getPosition() {
-        return position;
-    }
-
-    public void setPosition(Position newPosition) {
-        position.setX(newPosition.getX());
-        position.setY(newPosition.getY());
-    }
-
-    public Stats getStats() {
-        return stats;
-    }
+    void setPosition(Position newPosition);
 
 }

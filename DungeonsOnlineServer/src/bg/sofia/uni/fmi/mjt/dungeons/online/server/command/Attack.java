@@ -3,7 +3,7 @@ package bg.sofia.uni.fmi.mjt.dungeons.online.server.command;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.command.response.CommandResponse;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.Minion;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.Player;
-import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.Position;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Position;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.DungeonMap;
 
 import java.util.List;

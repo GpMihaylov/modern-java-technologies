@@ -2,8 +2,8 @@ package bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map;
 
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.Minion;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.Player;
-import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.Position;
-import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.Stats;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Position;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Stats;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.field.Field;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.field.FieldType;
 

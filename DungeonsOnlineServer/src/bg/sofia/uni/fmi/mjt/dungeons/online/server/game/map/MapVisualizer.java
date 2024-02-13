@@ -1,6 +1,6 @@
 package bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map;
 
-import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.Position;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Position;
 
 public class MapVisualizer {
 

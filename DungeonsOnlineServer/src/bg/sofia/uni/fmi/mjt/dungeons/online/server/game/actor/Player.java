@@ -1,8 +1,10 @@
 package bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor;
 
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.inventory.Backpack;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Position;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Stats;
 
-public class Player extends Actor {
+public class Player extends AbstractActor {
 
     private static final int BASE_HEALTH = 100;
     private static final int BASE_MANA = 100;
