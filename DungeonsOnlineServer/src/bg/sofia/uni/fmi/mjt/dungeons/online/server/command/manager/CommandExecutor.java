@@ -26,7 +26,7 @@ public class CommandExecutor {
     private static final String INVENTORY = "inventory";
     private static final String SEND = "send";
     private static final String QUIT = "quit";
-    private static final String INVALID_COMMAND = "No such command exists!";
+    private static final String INVALID_COMMAND = "No such command exists!\n";
 
     public CommandResponse execute(Command cmd, SocketChannel socketChannel) {
         String id = socketChannel.socket().getRemoteSocketAddress().toString();
@@ -34,12 +34,12 @@ public class CommandExecutor {
         return switch (cmd.command().toLowerCase().strip()) {
 //            case START -> Start.execute(id);
             case MOVE -> Move.execute(id, cmd.arguments());
-//            case PICK_UP -> PickUp.execute();
+            case PICK_UP -> PickUp.execute(id);
 //            case DROP -> Drop.execute();
 //            case USE -> Use.execute();
             case ATTACK -> Attack.execute(id);
 //            case STATS -> Stats.execute();
-//            case INVENTORY -> Inventory.execute();
+            case INVENTORY -> Inventory.execute(id);
 //            case SEND -> Send.execute();
 //            case QUIT -> Quit.execute();
             default -> CommandResponse.of(id, INVALID_COMMAND);

@@ -6,6 +6,8 @@ import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Position;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Stats;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.field.Field;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.field.FieldType;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.Treasure;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.weapon.Weapon;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,9 +24,10 @@ public class DungeonMap {
 
     private final Field[][] map;
 
-    private Map<String, Player> players;
-    private Map<String, Integer> playerNumbers;
-    private Map<Position, Minion> minions;
+    private final Map<String, Player> players;
+    private final Map<String, Integer> playerNumbers;
+    private final Map<Position, Minion> minions;
+    private final Map<Position, Treasure> treasure;
 
     private DungeonMap() {
         map = new Field[WIDTH][HEIGHT];
@@ -32,8 +35,19 @@ public class DungeonMap {
         players = new HashMap<>();
         playerNumbers = new HashMap<>();
         minions = new HashMap<>();
+        treasure = new HashMap<>();
 
-        minions.put(new Position(0, 0), new Minion());
+        initMinions();
+        initTreasure();
+    }
+
+    private void initMinions() {
+        //minions.put(new Position(0, 0), new Minion());
+    }
+
+    private void initTreasure() {
+        Position pos = new Position(0,0);
+        treasure.put(pos, new Weapon(pos, 1, 30));
     }
 
     public static DungeonMap getInstance() {
@@ -145,6 +159,10 @@ public class DungeonMap {
 
     private int calculateExperience(Minion minion) {
         return BASE_EXPERIENCE_FROM_MINION * minion.getStats().getLevel();
+    }
+
+    public Treasure getTreasureOnPosition(Position position) {
+        return treasure.get(position);
     }
 
 }

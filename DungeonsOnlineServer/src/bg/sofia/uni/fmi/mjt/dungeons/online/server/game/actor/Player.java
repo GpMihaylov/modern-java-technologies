@@ -3,6 +3,10 @@ package bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.inventory.Backpack;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Position;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Stats;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.Treasure;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.weapon.Weapon;
+
+import java.util.Optional;
 
 public class Player extends AbstractActor {
 
@@ -21,13 +25,15 @@ public class Player extends AbstractActor {
     private static final int DEFENCE_MODIFIER = 5;
     private final String id;
 
-    private Backpack backpack;
+    private final Backpack backpack;
+    private Optional<Weapon> weapon;
 
     public Player(String id) {
         this.id = id;
         position = new Position(0, 0);
         initBaseStats();
         backpack = new Backpack();
+        weapon = Optional.empty();
     }
 
     @Override
@@ -77,6 +83,35 @@ public class Player extends AbstractActor {
         if (stats.getExperience() >= stats.getXpToNextLevel()) {
             levelUp();
         }
+    }
+
+    public void pickUpItem(Treasure item) {
+        backpack.put(item);
+    }
+
+    public void equipWeapon(Weapon weapon) {
+        sendCurrentWeaponToBackpack();
+        getWeaponFromBackpack(weapon);
+
+        this.weapon = Optional.of(weapon);
+        stats.setAttack(stats.getAttack() + weapon.getAttack());
+    }
+
+    private void sendCurrentWeaponToBackpack() {
+        this.weapon.ifPresent(value -> stats.setAttack(stats.getAttack() - value.getAttack()));
+        this.weapon.ifPresent(backpack::put);
+    }
+
+    private void getWeaponFromBackpack(Weapon weapon) {
+        if (backpack.contains(weapon)) {
+            backpack.remove(weapon);
+        } else {
+            //todo exception
+        }
+    }
+
+    public Backpack getBackpack() {
+        return backpack;
     }
 
     public String getId() {

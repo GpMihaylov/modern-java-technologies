@@ -1,18 +1,34 @@
 package bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.spell;
 
-import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.spell.Spell;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.Player;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Position;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.TreasureType;
 
 public class ManaPotion extends Spell {
 
-    private int manaPoints;
+    private final int manaPoints;
 
-    public ManaPotion(int level, int manaCost, int manaPoints) {
-        super(level, manaCost);
+    public ManaPotion(Position position, int level, int manaCost, int manaPoints) {
+        super(position, level, manaCost);
         this.manaPoints = manaPoints;
+        setType(TreasureType.MANA_POTION);
     }
 
     @Override
-    public int use() {
-        return manaPoints;
+    public void use(Player player) {
+        if (getManaCost() > player.getStats().getMana()
+            || getLevel() > player.getStats().getLevel()) {
+            //todo exception + handle
+        }
+        int playerMana = player.getStats().getMana();
+        player.getStats().setHealth(playerMana + manaPoints);
+    }
+
+    @Override
+    public String toString() {
+        return "Level " + getLevel() +
+            " " + getType() + ";\t"
+            + "mana cost: " + getManaCost() +
+            "; \t mana points: " + manaPoints;
     }
 }

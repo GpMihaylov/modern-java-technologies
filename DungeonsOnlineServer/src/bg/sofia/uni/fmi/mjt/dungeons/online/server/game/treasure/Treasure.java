@@ -2,9 +2,30 @@ package bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure;
 
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Position;
 
-public class Treasure {
+public abstract class Treasure implements Usable {
 
-    protected Position position;
-    protected int level;
+    private Position position;
+    private int level;
+    private TreasureType type;
 
+    public Treasure(Position position, int level) {
+        this.position = position;
+        this.level = level;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public TreasureType getType() {
+        return type;
+    }
+
+    protected void setType(TreasureType type) {
+        this.type = type;
+    }
 }

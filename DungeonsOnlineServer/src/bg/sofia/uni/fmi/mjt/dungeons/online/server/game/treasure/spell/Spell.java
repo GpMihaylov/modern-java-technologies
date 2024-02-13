@@ -1,13 +1,18 @@
 package bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.spell;
 
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Position;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.Treasure;
 
-public abstract class Spell extends Treasure implements Usable {
-    private int level;
-    private int manaCost;
+public abstract class Spell extends Treasure {
 
-    public Spell(int level, int manaCost) {
-        this.level = level;
+    private final int manaCost;
+
+    public Spell(Position position, int level, int manaCost) {
+        super(position, level);
         this.manaCost = manaCost;
+    }
+
+    public int getManaCost() {
+        return manaCost;
     }
 }
