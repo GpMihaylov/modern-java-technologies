@@ -5,11 +5,13 @@ public abstract class Actor {
     protected Position position;
     protected Stats stats;
 
-    protected abstract void initStats();
+    protected abstract void initBaseStats();
 
-    public void loseHealth(int amount) {
-        stats.setHealth(stats.getHealth() + stats.getDefense() - amount);
-    }
+    public abstract void loseHealth(int amount);
+
+    public abstract void levelUp();
+
+    protected abstract void updateStats();
 
     public Position getPosition() {
         return position;

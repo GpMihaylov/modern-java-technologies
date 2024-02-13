@@ -14,7 +14,6 @@ public class Attack {
     private static final String SUCCESSFUL_HIT = "Attack successful, targets hit: %s\n";
     private static final String DEFENDER_HIT = "You were attacked by %s! You lose %s health!\n";
 
-
     public static CommandResponse execute(String id) {
         DungeonMap map = DungeonMap.getInstance();
 

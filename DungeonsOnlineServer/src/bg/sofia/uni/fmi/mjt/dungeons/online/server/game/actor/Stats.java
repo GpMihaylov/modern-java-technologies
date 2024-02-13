@@ -6,19 +6,23 @@ public class Stats {
     private int mana;
     private int attack;
     private int defense;
+    private int level;
+    private int experience;
+    private int xpToNextLevel;
 
-    public Stats(int health, int mana, int attack, int defense) {
+    public Stats(int health, int defense, int level) {
+        this.health = health;
+        this.defense = defense;
+        this.level = level;
+    }
+
+    public Stats(int health, int mana, int attack, int defense, int level, int experience, int xpToNextLevel) {
         this.health = health;
         this.mana = mana;
         this.attack = attack;
         this.defense = defense;
-    }
-
-    public Stats(int health, int defense) {
-        this.health = health;
-        mana = 0;
-        attack = 0;
-        this.defense = defense;
+        this.level = level;
+        this.experience = experience;
     }
 
     public int getHealth() {
@@ -37,8 +41,25 @@ public class Stats {
         return defense;
     }
 
-    //todo validation + dying
+    public int getLevel() {
+        return level;
+    }
+
+    public int getExperience() {
+        return experience;
+    }
+
+    public int getXpToNextLevel() {
+        return xpToNextLevel;
+    }
+
+    //todo validation + dying + level up
+
     public void setHealth(int health) {
+        if (health <= 0) {
+            //todo fix constant
+            this.health = 0;
+        }
         this.health = health;
     }
 
@@ -54,12 +75,27 @@ public class Stats {
         this.defense = defense;
     }
 
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public void setExperience(int experience) {
+        this.experience = experience;
+    }
+
+    public void setXpToNextLevel(int xpToNextLevel) {
+        this.xpToNextLevel = xpToNextLevel;
+    }
+
     @Override
     public String toString() {
         return "Player stats:\n" +
-            "health: " + health +
-            "\t mana:" + mana +
-            "\n attack:" + attack +
-            "\t defense:" + defense + "\n";
+            " health: " + health +
+            "\t mana: " + mana +
+            "\n attack: " + attack +
+            "\t defense: " + defense +
+            "\n level: " + level +
+            "\t experience: " + experience +
+            "\n";
     }
 }
