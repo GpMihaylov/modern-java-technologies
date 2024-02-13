@@ -4,13 +4,19 @@ import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Position;
 
 public abstract class Treasure implements Usable {
 
+    private String name;
     private Position position;
     private int level;
     private TreasureType type;
 
-    public Treasure(Position position, int level) {
+    public Treasure(String name, Position position, int level) {
         this.position = position;
         this.level = level;
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Position getPosition() {

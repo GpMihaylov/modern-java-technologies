@@ -3,7 +3,7 @@ package bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.inventory;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.Treasure;
 
 import java.util.HashSet;
-import java.util.Optional;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class Backpack {
@@ -43,6 +43,17 @@ public class Backpack {
         }
 
         return sb.toString();
+    }
+
+    public Treasure get(String name) {
+        for (Treasure item :
+            items) {
+            if (item.getName().equals(name)) {
+                return item;
+            }
+        }
+        //todo exception
+        return null;
     }
 
 }

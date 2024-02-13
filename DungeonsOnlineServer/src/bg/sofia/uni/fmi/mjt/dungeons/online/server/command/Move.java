@@ -7,14 +7,14 @@ import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.DungeonMap;
 
 public class Move {
 
-    private static final String MISSING_COMMAND = "Missing command argument\n";
+    private static final String MISSING_ARGUMENTS = "Missing command argument\n";
     private static final String INVALID_COMMAND = "Invalid command\n";
     private static final String SUCCESS = "You successfully moved %s\n";
     private static final String FAILURE = "Cannot move in that direction\n";
 
     public static CommandResponse execute(String id, String... args) {
         if (areArgsValid(args)) {
-            return CommandResponse.of(id, MISSING_COMMAND);
+            return CommandResponse.of(id, MISSING_ARGUMENTS);
         }
 
         Player player = DungeonMap.getInstance().getPlayer(id);

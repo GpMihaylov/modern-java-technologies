@@ -7,8 +7,8 @@ public abstract class Spell extends Treasure {
 
     private final int manaCost;
 
-    public Spell(Position position, int level, int manaCost) {
-        super(position, level);
+    public Spell(String name, Position position, int level, int manaCost) {
+        super(name, position, level);
         this.manaCost = manaCost;
     }
 

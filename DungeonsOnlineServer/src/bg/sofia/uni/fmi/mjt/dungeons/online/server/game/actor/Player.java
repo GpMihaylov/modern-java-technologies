@@ -114,6 +114,10 @@ public class Player extends AbstractActor {
         return backpack;
     }
 
+    public Treasure getTreasureFromName(String name) {
+        return backpack.get(name);
+    }
+
     public String getId() {
         return id;
     }

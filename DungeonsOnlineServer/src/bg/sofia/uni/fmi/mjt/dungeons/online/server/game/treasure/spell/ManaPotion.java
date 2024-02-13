@@ -8,8 +8,8 @@ public class ManaPotion extends Spell {
 
     private final int manaPoints;
 
-    public ManaPotion(Position position, int level, int manaCost, int manaPoints) {
-        super(position, level, manaCost);
+    public ManaPotion(String name, Position position, int level, int manaCost, int manaPoints) {
+        super(name, position, level, manaCost);
         this.manaPoints = manaPoints;
         setType(TreasureType.MANA_POTION);
     }
@@ -26,7 +26,7 @@ public class ManaPotion extends Spell {
 
     @Override
     public String toString() {
-        return "Level " + getLevel() +
+        return getName() + "\tLevel " + getLevel() +
             " " + getType() + ";\t"
             + "mana cost: " + getManaCost() +
             "; \t mana points: " + manaPoints;

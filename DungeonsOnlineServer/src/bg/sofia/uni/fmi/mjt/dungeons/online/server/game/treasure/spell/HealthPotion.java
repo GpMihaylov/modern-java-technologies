@@ -8,8 +8,8 @@ public class HealthPotion extends Spell {
 
     private final int healthPoints;
 
-    public HealthPotion(Position position, int level, int manaCost, int healthPoints) {
-        super(position, level, manaCost);
+    public HealthPotion(String name, Position position, int level, int manaCost, int healthPoints) {
+        super(name, position, level, manaCost);
         this.healthPoints = healthPoints;
         setType(TreasureType.HEALTH_POTION);
     }
@@ -30,7 +30,7 @@ public class HealthPotion extends Spell {
 
     @Override
     public String toString() {
-        return "Level " + getLevel() +
+        return getName() + "\tLevel " + getLevel() +
             " " + getType() + ";\t"
             + "mana cost: " + getManaCost() +
             "; \t health points: " + healthPoints;

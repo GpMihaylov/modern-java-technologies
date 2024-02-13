@@ -9,8 +9,8 @@ public class Weapon extends Treasure {
 
     private final int attack;
 
-    public Weapon(Position position, int level, int attack) {
-        super(position, level);
+    public Weapon(String name, Position position, int level, int attack) {
+        super(name, position, level);
         this.attack = attack;
         setType(TreasureType.WEAPON);
     }
@@ -29,7 +29,7 @@ public class Weapon extends Treasure {
 
     @Override
     public String toString() {
-        return "Level " + getLevel() +
+        return getName() + "\tLevel " + getLevel() +
             " " + getType() + ";\t"
             + "attack: " + attack + "\n";
     }

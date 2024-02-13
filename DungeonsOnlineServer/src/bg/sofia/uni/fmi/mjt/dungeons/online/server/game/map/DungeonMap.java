@@ -47,7 +47,7 @@ public class DungeonMap {
 
     private void initTreasure() {
         Position pos = new Position(0,0);
-        treasure.put(pos, new Weapon(pos, 1, 30));
+        treasure.put(pos, new Weapon("sword", pos, 1, 30));
     }
 
     public static DungeonMap getInstance() {
