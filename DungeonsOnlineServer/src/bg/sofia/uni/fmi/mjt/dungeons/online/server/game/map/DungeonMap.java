@@ -18,6 +18,7 @@ public class DungeonMap {
     public static final int WIDTH = 6;
     public static final int HEIGHT = 6;
     public static final int MINION_COUNT = 3;
+    private static final int BASE_EXPERIENCE_FROM_MINION = 50;
 
     private final Field[][] map;
 
@@ -31,6 +32,8 @@ public class DungeonMap {
         players = new HashMap<>();
         playerNumbers = new HashMap<>();
         minions = new HashMap<>();
+
+        minions.put(new Position(0, 0), new Minion());
     }
 
     public static DungeonMap getInstance() {
@@ -132,6 +135,16 @@ public class DungeonMap {
 
     public Stats getPlayerStats(String id) {
         return players.get(id).getStats();
+    }
+
+    public void givePlayerExperienceUponMinionDeath(String id, Minion minion) {
+        int experience = calculateExperience(minion);
+
+        players.get(id).gainExperience(experience);
+    }
+
+    private int calculateExperience(Minion minion) {
+        return BASE_EXPERIENCE_FROM_MINION * minion.getStats().getLevel();
     }
 
 }

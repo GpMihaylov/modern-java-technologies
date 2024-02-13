@@ -19,7 +19,7 @@ public class Player extends Actor {
     private static final int DEFENCE_MODIFIER = 5;
     private final String id;
 
-    Backpack backpack;
+    private Backpack backpack;
 
     public Player(String id) {
         this.id = id;
@@ -36,6 +36,9 @@ public class Player extends Actor {
 
     @Override
     public void loseHealth(int amount) {
+        if (amount <= 0) {
+            //todo exception
+        }
         stats.setHealth(stats.getHealth() + stats.getDefense() - amount);
 
         if (stats.getHealth() <= 0) {
@@ -62,6 +65,16 @@ public class Player extends Actor {
         stats.setDefense(getStats().getMana() + MANA_MODIFIER);
         stats.setAttack(getStats().getAttack() + ATTACK_MODIFIER);
         stats.setAttack(getStats().getDefense() + DEFENCE_MODIFIER);
+    }
+
+    public void gainExperience(int experience) {
+        if (experience <= 0) {
+            //todo exception
+        }
+        stats.setExperience(experience);
+        if (stats.getExperience() >= stats.getXpToNextLevel()) {
+            levelUp();
+        }
     }
 
     public String getId() {

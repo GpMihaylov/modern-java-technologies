@@ -23,6 +23,7 @@ public class Stats {
         this.defense = defense;
         this.level = level;
         this.experience = experience;
+        this.xpToNextLevel = xpToNextLevel;
     }
 
     public int getHealth() {
@@ -53,13 +54,9 @@ public class Stats {
         return xpToNextLevel;
     }
 
-    //todo validation + dying + level up
+    //todo validation
 
     public void setHealth(int health) {
-        if (health <= 0) {
-            //todo fix constant
-            this.health = 0;
-        }
         this.health = health;
     }
 

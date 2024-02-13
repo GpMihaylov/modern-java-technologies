@@ -19,8 +19,17 @@ public class CommandResponse {
     }
 
     public CommandResponse addResponse(String id, String response) {
-        responses.put(id, response);
+        if (responses.containsKey(id)) {
+            attachResponse(id, response);
+        } else {
+            responses.put(id, response);
+        }
         return this;
+    }
+
+    private void attachResponse(String id, String response) {
+        String existingResponse = responses.getOrDefault(id, "");
+        responses.put(id, existingResponse + response);
     }
 
     public Map<String, String> getResponses() {
@@ -29,8 +38,6 @@ public class CommandResponse {
 
     public CommandResponse attachHeader(String id) {
         String stats = DungeonMap.getInstance().getPlayerStats(id).toString();
-        String existingResponse = responses.getOrDefault(id, "");
-        String newResponse = existingResponse + stats;
-        return addResponse(id, newResponse);
+        return addResponse(id, stats);
     }
 }

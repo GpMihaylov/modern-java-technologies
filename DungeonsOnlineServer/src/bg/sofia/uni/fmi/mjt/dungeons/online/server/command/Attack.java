@@ -11,35 +11,36 @@ import java.util.List;
 public class Attack {
 
     private static final String MISS = "You did not hit anything!\n";
-    private static final String SUCCESSFUL_HIT = "Attack successful, targets hit: %s\n";
     private static final String DEFENDER_HIT = "You were attacked by %s! You lose %s health!\n";
+    private static final String DAMAGE_DEALT = "You dealt %s damage to %s!\n";
 
     public static CommandResponse execute(String id) {
+        CommandResponse response = new CommandResponse();
         DungeonMap map = DungeonMap.getInstance();
 
         Player attacker = map.getPlayer(id);
         Position position = attacker.getPosition();
-        int attackerNumber = map.getPlayerNumber(id);
         int attackStat = attacker.getStats().getAttack();
 
-        CommandResponse response = new CommandResponse();
-
         int targetsHit = 0;
-        targetsHit += hitPlayers(map, position, attacker, attackStat, response, attackerNumber);
+        targetsHit += hitPlayers(position, attacker, attackStat, response);
 
-        targetsHit += hitMinion(map, position, attackStat);
+        targetsHit += hitMinion(position, attacker, attackStat, response);
 
         if (targetsHit == 0) {
             return CommandResponse.of(id, MISS);
         }
 
-        response.addResponse(id, String.format(SUCCESSFUL_HIT, targetsHit))
-            .attachHeader(id);
+        response.attachHeader(id);
         return response;
     }
 
-    private static int hitPlayers(DungeonMap map, Position position, Player attacker, int attackStat,
-                                     CommandResponse response, int attackerNumber) {
+    private static int hitPlayers(Position position, Player attacker, int attackStat,
+                                     CommandResponse response) {
+        DungeonMap map = DungeonMap.getInstance();
+
+        int attackerNumber = map.getPlayerNumber(attacker.getId());
+
         List<Player> playersOnPosition = map.getPlayersOnPosition(position);
         int hits = 0;
 
@@ -47,21 +48,40 @@ public class Attack {
             if (defender.equals(attacker)) {
                 continue;
             }
+            int defenderNumber = map.getPlayerNumber(defender.getId());
+
             defender.loseHealth(attackStat);
             int lostHealth = attackStat - defender.getStats().getDefense();
+
             response.addResponse(defender.getId(),
                     String.format(DEFENDER_HIT, attackerNumber, lostHealth))
                 .attachHeader(defender.getId());
+
+            response.addResponse(attacker.getId(),
+                String.format(DAMAGE_DEALT, lostHealth, defenderNumber));
+
             hits++;
         }
         return hits;
     }
 
-    private static int hitMinion(DungeonMap map, Position position, int attackStat) {
+    private static int hitMinion(Position position, Player attacker, int attackStat,
+                                 CommandResponse response) {
+        DungeonMap map = DungeonMap.getInstance();
+
         int hit = 0;
         if (map.isMinionOnPosition(position)) {
             Minion minion = map.getMinionOnPosition(position);
+            int lostHealth = attackStat - minion.getStats().getDefense();
+
+            if (minion.getStats().getHealth() - lostHealth <= 0) {
+                map.givePlayerExperienceUponMinionDeath(attacker.getId(), minion);
+            }
             minion.loseHealth(attackStat);
+
+            response.addResponse(attacker.getId(),
+                String.format(DAMAGE_DEALT, lostHealth, "a minion"));
+
             hit++;
         }
         return hit;
