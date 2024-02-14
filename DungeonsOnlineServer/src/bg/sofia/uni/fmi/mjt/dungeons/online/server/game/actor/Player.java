@@ -4,6 +4,8 @@ import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.inventory.Backpack
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Position;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Stats;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.Treasure;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.spell.HealthPotion;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.spell.ManaPotion;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.weapon.Weapon;
 
 import java.util.Optional;
@@ -37,7 +39,7 @@ public class Player extends AbstractActor {
     }
 
     @Override
-    protected void initBaseStats() {
+    public void initBaseStats() {
         stats = new Stats(BASE_HEALTH, BASE_MANA, BASE_ATTACK, BASE_DEFENSE,
             BASE_LEVEL, BASE_EXPERIENCE, BASE_EXPERIENCE_NEEDED);
     }
@@ -67,8 +69,32 @@ public class Player extends AbstractActor {
         }
     }
 
+    public void useHealthPotion(HealthPotion potion) {
+        if (backpack.contains(potion)) {
+            heal(potion.getHealthPoints());
+            backpack.remove(potion);
+        }
+    }
+
+    public void useManaPotion(ManaPotion potion) {
+        if (backpack.contains(potion)) {
+            gainMana(potion.getManaPoints());
+            backpack.remove(potion);
+        }
+    }
+
+    private void heal(int amount) {
+        int maxHealth = BASE_HEALTH + stats.getLevel() * HEALTH_MODIFIER;
+        stats.setHealth(Math.min(stats.getHealth() + amount, maxHealth));
+    }
+
+    private void gainMana(int amount) {
+        int maxMana = BASE_MANA + stats.getLevel() * MANA_MODIFIER;
+        stats.setMana(Math.min(stats.getMana() + amount, maxMana));
+    }
+
     @Override
-    protected void updateStats() {
+    public void updateStats() {
         stats.setHealth(getStats().getHealth() + HEALTH_MODIFIER);
         stats.setMana(getStats().getMana() + MANA_MODIFIER);
         stats.setAttack(getStats().getAttack() + ATTACK_MODIFIER);
@@ -83,16 +109,6 @@ public class Player extends AbstractActor {
         if (stats.getExperience() >= stats.getXpToNextLevel()) {
             levelUp();
         }
-    }
-
-    public void heal(int amount) {
-        int maxHealth = BASE_HEALTH + stats.getLevel() * HEALTH_MODIFIER;
-        stats.setHealth(Math.min(stats.getHealth() + amount, maxHealth));
-    }
-
-    public void gainMana(int amount) {
-        int maxMana = BASE_MANA + stats.getLevel() * MANA_MODIFIER;
-        stats.setMana(Math.min(stats.getMana() + amount, maxMana));
     }
 
     public void pickUpItem(Treasure item) {

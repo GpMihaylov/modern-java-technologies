@@ -4,12 +4,12 @@ public class Field {
 
     private FieldType type;
 
-    public Field() {
-        type = FieldType.EMPTY_SPACE;
-    }
-
     public Field(FieldType type) {
         this.type = type;
+    }
+
+    public static Field of(FieldType type) {
+        return new Field(type);
     }
 
     public FieldType getType() {

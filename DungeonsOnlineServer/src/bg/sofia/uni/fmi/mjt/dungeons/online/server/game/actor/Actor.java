@@ -9,6 +9,10 @@ public interface Actor {
 
     void levelUp();
 
+    void initBaseStats();
+
+    void updateStats();
+
     Position getPosition();
 
     Stats getStats();

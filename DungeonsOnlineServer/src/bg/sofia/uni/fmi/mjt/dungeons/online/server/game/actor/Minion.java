@@ -14,7 +14,7 @@ public class Minion extends AbstractActor {
     }
 
     @Override
-    protected void initBaseStats() {
+    public void initBaseStats() {
         stats = new Stats(BASE_HEALTH, BASE_DEFENSE, BASE_LEVEL);
     }
 
@@ -44,7 +44,7 @@ public class Minion extends AbstractActor {
     }
 
     @Override
-    protected void updateStats() {
+    public void updateStats() {
         int level = stats.getLevel();
         stats.setHealth(stats.getHealth() + level);
         stats.setDefense(stats.getDefense() + level);

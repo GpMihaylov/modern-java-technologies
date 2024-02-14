@@ -8,10 +8,6 @@ public abstract class AbstractActor implements Actor {
     protected Position position;
     protected Stats stats;
 
-    protected abstract void initBaseStats();
-
-    protected abstract void updateStats();
-
     @Override
     public Position getPosition() {
         return position;

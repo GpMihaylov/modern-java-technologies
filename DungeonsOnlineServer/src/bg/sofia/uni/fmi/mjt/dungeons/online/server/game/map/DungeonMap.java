@@ -141,7 +141,7 @@ public class DungeonMap {
     private void initMap() {
         for (int i = 0; i < WIDTH; i++) {
             for (int j = 0; j < HEIGHT; j++) {
-                map[i][j] = new Field();
+                map[i][j] = Field.of(FieldType.EMPTY_SPACE);
             }
         }
         initObstacles();
@@ -158,7 +158,7 @@ public class DungeonMap {
     }
 
     private void setObstacle(int x, int y) {
-        map[x][y] = new Field(FieldType.OBSTACLE);
+        map[x][y] = Field.of(FieldType.OBSTACLE);
     }
 
     private void initMinions() {
@@ -182,7 +182,7 @@ public class DungeonMap {
 
     private void setMinion(Position position) {
         minions.put(position, new Minion(position));
-        map[position.getX()][position.getY()] = new Field(FieldType.MINION);
+        map[position.getX()][position.getY()] = Field.of(FieldType.MINION);
     }
 
     private void initTreasure() {
@@ -210,7 +210,7 @@ public class DungeonMap {
                 BASE_POTION_COST + itemLevel * MODIFIER,
                 BASE_POTION_AMOUNT + itemLevel * MODIFIER));
         };
-        map[position.getX()][position.getY()] = new Field(FieldType.TREASURE);
+        map[position.getX()][position.getY()] = Field.of(FieldType.TREASURE);
         treasure.put(position, newItem);
     }
 

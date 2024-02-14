@@ -20,7 +20,7 @@ public class HealthPotion extends Spell {
             || getLevel() > player.getStats().getLevel()) {
             //todo
         }
-        player.heal(healthPoints);
+        player.useHealthPotion(this);
     }
 
     public int getHealthPoints() {

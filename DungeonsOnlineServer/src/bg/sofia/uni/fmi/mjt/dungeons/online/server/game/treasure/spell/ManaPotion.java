@@ -20,7 +20,11 @@ public class ManaPotion extends Spell {
             || getLevel() > player.getStats().getLevel()) {
             //todo exception + handle
         }
-        player.gainMana(manaPoints);
+        player.useManaPotion(this);
+    }
+
+    public int getManaPoints() {
+        return manaPoints;
     }
 
     @Override
