@@ -9,7 +9,7 @@ import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.DungeonMap;
 import java.util.List;
 
 public class Attack {
-
+//todo after killing minion second time, stats became way too high, find cause
     private static final String MISS = "You did not hit anything!\n";
     private static final String DEFENDER_HIT = "You were attacked by %s! You lose %s health!\n";
     private static final String DAMAGE_DEALT = "You dealt %s damage to %s!\n";

@@ -1,5 +1,6 @@
 package bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor;
 
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Position;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Stats;
 
 public class Minion extends AbstractActor {
@@ -7,8 +8,9 @@ public class Minion extends AbstractActor {
     private static final int BASE_DEFENSE = 5;
     private static final int BASE_LEVEL = 1;
 
-    public Minion() {
+    public Minion(Position position) {
         initBaseStats();
+        this.position = new Position(position.getX(), position.getY());
     }
 
     @Override
