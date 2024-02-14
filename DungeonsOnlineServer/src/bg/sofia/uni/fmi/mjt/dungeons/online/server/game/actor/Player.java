@@ -85,6 +85,16 @@ public class Player extends AbstractActor {
         }
     }
 
+    public void heal(int amount) {
+        int maxHealth = BASE_HEALTH + stats.getLevel() * HEALTH_MODIFIER;
+        stats.setHealth(Math.min(stats.getHealth() + amount, maxHealth));
+    }
+
+    public void gainMana(int amount) {
+        int maxMana = BASE_MANA + stats.getLevel() * MANA_MODIFIER;
+        stats.setMana(Math.min(stats.getMana() + amount, maxMana));
+    }
+
     public void pickUpItem(Treasure item) {
         backpack.put(item);
     }

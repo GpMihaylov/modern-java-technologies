@@ -10,7 +10,7 @@ public class HealthPotion extends Spell {
 
     public HealthPotion(String name, Position position, int level, int manaCost, int healthPoints) {
         super(name, position, level, manaCost);
-        this.healthPoints = healthPoints;
+        this.healthPoints = healthPoints + 2 * level;
         setType(TreasureType.HEALTH_POTION);
     }
 
@@ -20,8 +20,7 @@ public class HealthPotion extends Spell {
             || getLevel() > player.getStats().getLevel()) {
             //todo
         }
-        int playerHealth = player.getStats().getHealth();
-        player.getStats().setHealth(playerHealth + healthPoints);
+        player.heal(healthPoints);
     }
 
     public int getHealthPoints() {

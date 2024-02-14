@@ -11,7 +11,7 @@ public class Weapon extends Treasure {
 
     public Weapon(String name, Position position, int level, int attack) {
         super(name, position, level);
-        this.attack = attack;
+        this.attack = attack + 2 * level;
         setType(TreasureType.WEAPON);
     }
 

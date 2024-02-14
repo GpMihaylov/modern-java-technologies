@@ -1,6 +1,11 @@
 package bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure;
 
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Position;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.spell.HealthPotion;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.spell.ManaPotion;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.weapon.Weapon;
+
+import java.util.function.Supplier;
 
 public abstract class Treasure implements Usable {
 
@@ -13,6 +18,13 @@ public abstract class Treasure implements Usable {
         this.position = position;
         this.level = level;
         this.name = name;
+    }
+
+    public static Treasure of(TreasureType type, Supplier<Treasure> constructor) {
+        return switch (type) {
+            case WEAPON, MANA_POTION, HEALTH_POTION -> constructor.get();
+            default -> throw new IllegalArgumentException("Invalid treasure type");
+        };
     }
 
     public String getName() {

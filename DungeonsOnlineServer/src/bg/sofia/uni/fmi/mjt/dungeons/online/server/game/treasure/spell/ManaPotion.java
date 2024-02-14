@@ -10,7 +10,7 @@ public class ManaPotion extends Spell {
 
     public ManaPotion(String name, Position position, int level, int manaCost, int manaPoints) {
         super(name, position, level, manaCost);
-        this.manaPoints = manaPoints;
+        this.manaPoints = manaPoints + 2 * level;
         setType(TreasureType.MANA_POTION);
     }
 
@@ -20,8 +20,7 @@ public class ManaPotion extends Spell {
             || getLevel() > player.getStats().getLevel()) {
             //todo exception + handle
         }
-        int playerMana = player.getStats().getMana();
-        player.getStats().setHealth(playerMana + manaPoints);
+        player.gainMana(manaPoints);
     }
 
     @Override

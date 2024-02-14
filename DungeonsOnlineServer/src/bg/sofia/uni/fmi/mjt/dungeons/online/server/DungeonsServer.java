@@ -70,10 +70,6 @@ public class DungeonsServer {
                                 continue;
                             }
 
-//                            String output = commandExecutor
-//                                .execute(CommandCreator.newCommand(clientInput), clientChannel);
-//                            writeClientOutput(clientChannel, output);
-
                             CommandResponse response = commandExecutor
                                 .execute(CommandCreator.newCommand(clientInput), clientChannel);
 
