@@ -69,10 +69,10 @@ public class Player extends AbstractActor {
 
     @Override
     protected void updateStats() {
-        stats.setAttack(getStats().getHealth() + HEALTH_MODIFIER);
-        stats.setDefense(getStats().getMana() + MANA_MODIFIER);
+        stats.setHealth(getStats().getHealth() + HEALTH_MODIFIER);
+        stats.setMana(getStats().getMana() + MANA_MODIFIER);
         stats.setAttack(getStats().getAttack() + ATTACK_MODIFIER);
-        stats.setAttack(getStats().getDefense() + DEFENCE_MODIFIER);
+        stats.setDefense(getStats().getDefense() + DEFENCE_MODIFIER);
     }
 
     public void gainExperience(int experience) {
