@@ -105,6 +105,16 @@ public class DungeonMap {
         return playerNumbers.get(id);
     }
 
+    public Player getPlayerFromNumber(int num) {
+        for (Map.Entry<String, Integer> entry : playerNumbers.entrySet()) {
+            if (entry.getValue() == num) {
+                return getPlayer(entry.getKey());
+            }
+        }
+        //todo exception?
+        return null;
+    }
+
     public boolean isObstacle(Position p) {
         return map[p.getX()][p.getY()].getType().equals(FieldType.OBSTACLE);
     }

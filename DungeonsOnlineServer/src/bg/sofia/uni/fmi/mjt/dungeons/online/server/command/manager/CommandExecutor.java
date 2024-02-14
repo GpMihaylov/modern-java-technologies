@@ -40,7 +40,7 @@ public class CommandExecutor {
             case ATTACK -> Attack.execute(id);
             case STATS -> Stats.execute(id);
             case INVENTORY -> Inventory.execute(id);
-//            case SEND -> Send.execute();
+            case SEND -> Send.execute(id, cmd.arguments());
 //            case QUIT -> Quit.execute();
             default -> CommandResponse.of(id, INVALID_COMMAND);
         };

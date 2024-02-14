@@ -10,7 +10,7 @@ public class Use {
 
     private static final String INVALID_ARGUMENTS = "Invalid command arguments!\n";
     private static final String POTION_USED = "Potion used!\n";
-    private static final String WEAPON_EQUIPED = "Weapon equipped!\n";
+    private static final String WEAPON_EQUIPPED = "Weapon equipped!\n";
     private static final String UNKNOWN_TYPE = "Unknown treasure type\n";
     private static final String UNKNOWN_ITEM = "Item does not exist!\n";
     public static CommandResponse execute(String id, String... args) {
@@ -30,7 +30,7 @@ public class Use {
         }
 
         if (treasure.getType().equals(TreasureType.WEAPON)) {
-            return CommandResponse.of(id, WEAPON_EQUIPED);
+            return CommandResponse.of(id, WEAPON_EQUIPPED);
         } else if (treasure.getType().equals(TreasureType.MANA_POTION)
             || treasure.getType().equals(TreasureType.HEALTH_POTION)) {
             return CommandResponse.of(id, POTION_USED);
@@ -39,7 +39,7 @@ public class Use {
         return CommandResponse.of(id, UNKNOWN_TYPE);
     }
 
-    private static boolean areArgsInvalid(String[] args) {
+    private static boolean areArgsInvalid(String... args) {
         return args == null || args.length != 1;
     }
 

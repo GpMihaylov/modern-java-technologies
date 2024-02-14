@@ -20,7 +20,7 @@ public class Weapon extends Treasure {
         if (getLevel() > player.getStats().getLevel()) {
             //todo exception + handle
         }
-        player.equipWeapon(this);
+        player.equipWeapon(this); //todo should throw exception
     }
 
     public int getAttack() {

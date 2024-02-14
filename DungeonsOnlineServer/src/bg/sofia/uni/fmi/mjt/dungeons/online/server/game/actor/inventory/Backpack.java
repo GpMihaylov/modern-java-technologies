@@ -32,6 +32,7 @@ public class Backpack {
     }
 
     public void remove(Treasure item) {
+        //todo validation + exception
         items.remove(item);
     }
 

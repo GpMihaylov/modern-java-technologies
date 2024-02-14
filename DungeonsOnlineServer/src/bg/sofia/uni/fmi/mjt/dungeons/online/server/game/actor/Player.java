@@ -91,8 +91,8 @@ public class Player extends AbstractActor {
 
     public void equipWeapon(Weapon weapon) {
         sendCurrentWeaponToBackpack();
-        getWeaponFromBackpack(weapon);
 
+        backpack.remove(weapon);
         this.weapon = Optional.of(weapon);
         stats.setAttack(stats.getAttack() + weapon.getAttack());
     }
