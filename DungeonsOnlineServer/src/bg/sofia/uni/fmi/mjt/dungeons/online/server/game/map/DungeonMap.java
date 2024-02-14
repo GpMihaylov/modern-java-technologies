@@ -17,9 +17,10 @@ public class DungeonMap {
 
     private static volatile DungeonMap instance;
 
-    public static final int WIDTH = 6;
-    public static final int HEIGHT = 6;
-    public static final int MINION_COUNT = 3;
+    public static final int WIDTH = 9;
+    public static final int HEIGHT = 9;
+    public static final int MINION_COUNT = 4;
+    public static final int ITEMS_COUNT = 4;
     private static final int BASE_EXPERIENCE_FROM_MINION = 50;
 
     private final Field[][] map;
@@ -28,6 +29,17 @@ public class DungeonMap {
     private final Map<String, Integer> playerNumbers;
     private final Map<Position, Minion> minions;
     private final Map<Position, Treasure> treasure;
+
+    public static DungeonMap getInstance() {
+        if (instance == null) {
+            synchronized (DungeonMap.class) {
+                if (instance == null) {
+                    instance = new DungeonMap();
+                }
+            }
+        }
+        return instance;
+    }
 
     private DungeonMap() {
         map = new Field[WIDTH][HEIGHT];
@@ -41,25 +53,19 @@ public class DungeonMap {
         initTreasure();
     }
 
-    private void initMinions() {
-        //minions.put(new Position(0, 0), new Minion());
-    }
+    /*
+    0  1  2  3  4  5  6  7  8
+0   .  #  #  T  .  .  .  T  .
+1   .  T  #  .  #  #  #  .  .
+2   T  .  #  .  T  T  .  M  .
+3   .  M  .  #  .  .  #  #  #
+4   .  .  .  #  .  .  .  .  .
+5   .  .  #  T  #  .  T  .  .
+6   .  .  .  .  .  .  .  M  .
+7   .  T  .  M  .  .  #  #  .
+8   .  .  #  #  #  .  #  M  .
 
-    private void initTreasure() {
-        Position pos = new Position(0,0);
-        treasure.put(pos, new Weapon("sword", pos, 1, 30));
-    }
-
-    public static DungeonMap getInstance() {
-        if (instance == null) {
-            synchronized (DungeonMap.class) {
-                if (instance == null) {
-                    instance = new DungeonMap();
-                }
-            }
-        }
-        return instance;
-    }
+     */
 
     private void initMap() {
         for (int i = 0; i < WIDTH; i++) {
@@ -67,6 +73,42 @@ public class DungeonMap {
                 map[i][j] = new Field();
             }
         }
+        initObstacles();
+    }
+
+    private void initObstacles() {
+        map[0][1] = new Field(FieldType.OBSTACLE);
+        map[0][2] = new Field(FieldType.OBSTACLE);
+        map[1][2] = new Field(FieldType.OBSTACLE);
+        map[1][4] = new Field(FieldType.OBSTACLE);
+        map[1][5] = new Field(FieldType.OBSTACLE);
+        map[1][6] = new Field(FieldType.OBSTACLE);
+        map[2][1] = new Field(FieldType.OBSTACLE);
+        map[3][3] = new Field(FieldType.OBSTACLE);
+        map[3][6] = new Field(FieldType.OBSTACLE);
+        map[3][7] = new Field(FieldType.OBSTACLE);
+        map[3][8] = new Field(FieldType.OBSTACLE);
+        map[4][3] = new Field(FieldType.OBSTACLE);
+        map[5][2] = new Field(FieldType.OBSTACLE);
+        map[5][4] = new Field(FieldType.OBSTACLE);
+        map[7][6] = new Field(FieldType.OBSTACLE);
+        map[7][7] = new Field(FieldType.OBSTACLE);
+        map[8][2] = new Field(FieldType.OBSTACLE);
+        map[8][3] = new Field(FieldType.OBSTACLE);
+        map[8][4] = new Field(FieldType.OBSTACLE);
+        map[8][6] = new Field(FieldType.OBSTACLE);
+    }
+
+    private void initMinions() {
+
+        minions.put(new Position(1, 1), new Minion(new Position(1, 1)));
+    }
+
+    private void initTreasure() {
+        Position pos = new Position(0,0);
+        Position pos2 = new Position(1,2);
+        treasure.put(pos, new Weapon("sword", pos, 1, 30));
+        treasure.put(pos2, new Weapon("sword", pos2, 1, 30));
     }
 
     public Field getField(Position p) {
@@ -138,6 +180,10 @@ public class DungeonMap {
             Integer playerNumber = playerNumbers.get(playersOnPosition.getFirst().getId());
             map[oldPosition.getX()][oldPosition.getY()]
                 .setType(FieldType.valueOf("PLAYER" + playerNumber));
+        } else if (isMinionOnPosition(oldPosition)) {
+            map[oldPosition.getX()][oldPosition.getY()].setType(FieldType.MINION);
+        } else if (isTreasureOnPosition(oldPosition)) {
+            map[oldPosition.getX()][oldPosition.getY()].setType(FieldType.TREASURE);
         } else {
             map[oldPosition.getX()][oldPosition.getY()]
                 .setType(FieldType.EMPTY_SPACE);
@@ -151,6 +197,10 @@ public class DungeonMap {
 
     public boolean isMinionOnPosition(Position position) {
         return minions.containsKey(position);
+    }
+
+    private boolean isTreasureOnPosition(Position position) {
+        return treasure.containsKey(position);
     }
 
     public Minion getMinionOnPosition(Position position) {
@@ -172,7 +222,11 @@ public class DungeonMap {
     }
 
     public Treasure getTreasureOnPosition(Position position) {
-        return treasure.get(position);
+        if (isTreasureOnPosition(position)) {
+            return treasure.get(position);
+        } else {
+            throw new IllegalArgumentException("adsa"); //todo fix exception
+        }
     }
 
 }

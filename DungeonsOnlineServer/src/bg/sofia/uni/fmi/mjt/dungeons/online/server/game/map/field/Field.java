@@ -8,6 +8,10 @@ public class Field {
         type = FieldType.EMPTY_SPACE;
     }
 
+    public Field(FieldType type) {
+        this.type = type;
+    }
+
     public FieldType getType() {
         return type;
     }
