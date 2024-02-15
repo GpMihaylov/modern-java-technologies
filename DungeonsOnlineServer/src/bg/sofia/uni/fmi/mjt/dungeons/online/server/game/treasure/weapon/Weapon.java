@@ -31,6 +31,6 @@ public class Weapon extends Treasure {
     public String toString() {
         return getName() + "\tLevel " + getLevel() +
             " " + getType() + ";\t"
-            + "attack: " + attack + "\n";
+            + "attack: " + attack + System.lineSeparator();
     }
 }

@@ -8,11 +8,11 @@ import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.TreasureType;
 
 public class Use {
 
-    private static final String INVALID_ARGUMENTS = "Invalid command arguments!\n";
-    private static final String POTION_USED = "Potion used!\n";
-    private static final String WEAPON_EQUIPPED = "Weapon equipped!\n";
-    private static final String UNKNOWN_TYPE = "Unknown treasure type\n";
-    private static final String UNKNOWN_ITEM = "Item does not exist!\n";
+    private static final String INVALID_ARGUMENTS = "Invalid command arguments!" + System.lineSeparator();
+    private static final String POTION_USED = "Potion used!" + System.lineSeparator();
+    private static final String WEAPON_EQUIPPED = "Weapon equipped!" + System.lineSeparator();
+    private static final String UNKNOWN_TYPE = "Unknown treasure type" + System.lineSeparator();
+    private static final String UNKNOWN_ITEM = "Item does not exist!" + System.lineSeparator();
     public static CommandResponse execute(String id, String... args) {
         if (areArgsInvalid(args)) {
             return CommandResponse.of(id, INVALID_ARGUMENTS);

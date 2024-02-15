@@ -10,8 +10,8 @@ import java.util.List;
 
 public class PickUp {
 
-    private static final String ITEM_PICKED_UP = "You picked up a treasure!\n";
-    private static final String NO_AVAILABLE_ITEMS = "No available items on this position!\n";
+    private static final String ITEM_PICKED_UP = "You picked up a treasure!" + System.lineSeparator();
+    private static final String NO_AVAILABLE_ITEMS = "No available items on this position!" + System.lineSeparator();
 
     public static CommandResponse execute(String id) {
         DungeonMap map = DungeonMap.getInstance();

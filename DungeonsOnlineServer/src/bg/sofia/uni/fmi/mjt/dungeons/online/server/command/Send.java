@@ -7,11 +7,11 @@ import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.DungeonMap;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.Treasure;
 
 public class Send {
-    private static final String INVALID_ARGUMENTS = "Invalid command arguments!\n";
-    private static final String INVALID_TARGET = "Cannot send to player %s!\n";
-    private static final String UNKNOWN_ITEM = "Item does not exist!\n";
-    private static final String ITEM_SENT = "You sent a %s to player %s!\n";
-    private static final String ITEM_RECEIVED = "You received a %s from player %s!\n";
+    private static final String INVALID_ARGUMENTS = "Invalid command arguments!" + System.lineSeparator();
+    private static final String INVALID_TARGET = "Cannot send to player %s!" + System.lineSeparator();
+    private static final String UNKNOWN_ITEM = "Item does not exist!" + System.lineSeparator();
+    private static final String ITEM_SENT = "You sent a %s to player %s!" + System.lineSeparator();
+    private static final String ITEM_RECEIVED = "You received a %s from player %s!" + System.lineSeparator();
 
     public static CommandResponse execute(String id, String... args) {
         if (areArgsInvalid(args)) {

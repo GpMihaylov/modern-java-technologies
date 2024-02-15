@@ -191,7 +191,7 @@ public class DungeonsServer {
         DungeonMap.getInstance().addPlayer(id);
 
         writeClientOutputResponse(CommandResponse.of(id, "You are player " + DungeonMap.getInstance().getPlayerNumber(id)
-            + "! Happy dungeon dwelling!\n"));
+            + "! Happy dungeon dwelling!" + System.lineSeparator()));
 
         broadcastMap();
     }

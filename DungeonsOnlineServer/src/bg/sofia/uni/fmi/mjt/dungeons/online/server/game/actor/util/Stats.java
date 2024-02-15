@@ -86,13 +86,12 @@ public class Stats {
 
     @Override
     public String toString() {
-        return "Player stats:\n" +
+        return "Player stats:"  + System.lineSeparator() +
             " health: " + health +
-            "\t mana: " + mana +
-            "\n attack: " + attack +
-            "\t defense: " + defense +
-            "\n level: " + level +
-            "\t experience: " + experience +
-            "\n";
+            "\t mana: " + mana + System.lineSeparator() +
+            " attack: " + attack +
+            "\t defense: " + defense + System.lineSeparator() +
+            " level: " + level +
+            "\t experience: " + experience + System.lineSeparator();
     }
 }

@@ -54,8 +54,12 @@ public class Player extends AbstractActor {
 
         if (stats.getHealth() <= 0) {
             initBaseStats();
-            //drop random item
+            dropRandomItem();
         }
+    }
+
+    private void dropRandomItem() {
+        backpack.dropRandomItem();
     }
 
     @Override

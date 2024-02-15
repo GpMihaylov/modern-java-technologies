@@ -2,8 +2,10 @@ package bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.inventory;
 
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.Treasure;
 
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 public class Backpack {
@@ -38,9 +40,9 @@ public class Backpack {
 
     public String listAllItems() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Inventory:\n");
+        sb.append("Inventory:").append(System.lineSeparator());
         for (Treasure item : items) {
-            sb.append(item.toString()).append("\n");
+            sb.append(item.toString()).append(System.lineSeparator());
         }
 
         return sb.toString();
@@ -57,4 +59,16 @@ public class Backpack {
         return null;
     }
 
+    public void dropRandomItem() {
+        if (!isEmpty()) {
+            List<Treasure> backpackList = new ArrayList<>(items);
+
+            Random random = new Random();
+            int indexToRemove = random.nextInt(backpackList.size());
+
+            remove(backpackList.get(indexToRemove));
+        } else {
+            //todo exception
+        }
+    }
 }

@@ -10,9 +10,9 @@ import java.util.List;
 
 public class Attack {
 //todo after killing minion second time, stats became way too high, find cause
-    private static final String MISS = "You did not hit anything!\n";
-    private static final String DEFENDER_HIT = "You were attacked by %s! You lose %s health!\n";
-    private static final String DAMAGE_DEALT = "You dealt %s damage to %s!\n";
+    private static final String MISS = "You did not hit anything!" + System.lineSeparator();
+    private static final String DEFENDER_HIT = "You were attacked by %s! You lose %s health!" + System.lineSeparator();
+    private static final String DAMAGE_DEALT = "You dealt %s damage to %s!" + System.lineSeparator();
 
     public static CommandResponse execute(String id) {
         CommandResponse response = new CommandResponse();

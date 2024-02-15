@@ -23,7 +23,7 @@ import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePosit
 
 public class DungeonMap {
 //todo remove picked up items
-    //todo use potion are not consumed
+    //todo remove item on player death
     private static volatile DungeonMap instance;
 
     public static final int WIDTH = 9;
