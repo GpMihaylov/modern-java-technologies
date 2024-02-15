@@ -1,7 +1,6 @@
 package bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.weapon;
 
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.exception.InsufficientLevelException;
-import bg.sofia.uni.fmi.mjt.dungeons.online.server.exception.InsufficientManaCostException;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.exception.MaxCapacityReachedException;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.exception.NonexistentItemException;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.Player;

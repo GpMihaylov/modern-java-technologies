@@ -8,8 +8,6 @@ import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Position;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.DungeonMap;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.Treasure;
 
-import java.util.List;
-
 public class PickUp {
 
     private static final String NO_AVAILABLE_ITEMS = "No available items on this position!" + System.lineSeparator();

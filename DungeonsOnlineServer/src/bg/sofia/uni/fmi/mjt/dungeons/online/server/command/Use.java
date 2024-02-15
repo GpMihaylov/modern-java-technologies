@@ -13,13 +13,15 @@ import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.TreasureType;
 public class Use {
 
     private static final String INVALID_ARGUMENTS = "Invalid command arguments!" + System.lineSeparator();
-    private static final String INSUFFICIENT_LEVEL = "Player level must be equal or greater than item level!" + System.lineSeparator();
+    private static final String INSUFFICIENT_LEVEL = "Player level must be equal " +
+        "or greater than item level!" + System.lineSeparator();
     private static final String INSUFFICIENT_MANA = "You cannot use this - insufficient mana!" + System.lineSeparator();
     private static final String UNKNOWN_ITEM = "Item does not exist!" + System.lineSeparator();
     private static final String POTION_USED = "Potion used!" + System.lineSeparator();
     private static final String WEAPON_EQUIPPED = "Weapon equipped!" + System.lineSeparator();
     private static final String WEAPON_NOT_EQUIPPED = "Cannot equip weapon!" + System.lineSeparator();
     private static final String UNKNOWN_TYPE = "Unknown treasure type" + System.lineSeparator();
+
     public static CommandResponse execute(String id, String... args) {
         if (areArgsInvalid(args)) {
             return CommandResponse.of(id, INVALID_ARGUMENTS);
@@ -48,7 +50,6 @@ public class Use {
             || treasure.getType().equals(TreasureType.HEALTH_POTION)) {
             return CommandResponse.of(id, POTION_USED);
         }
-
         return CommandResponse.of(id, UNKNOWN_TYPE);
     }
 

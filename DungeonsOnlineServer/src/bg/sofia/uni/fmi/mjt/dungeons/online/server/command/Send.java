@@ -5,7 +5,6 @@ import bg.sofia.uni.fmi.mjt.dungeons.online.server.exception.MaxCapacityReachedE
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.exception.NonexistentItemException;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.exception.PlayerNotFoundException;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.Player;
-import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Position;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.DungeonMap;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.Treasure;
 
@@ -17,7 +16,6 @@ public class Send {
     private static final String ITEM_NOT_SENT = "You failed to send %s to player %s!" + System.lineSeparator();
     private static final String ITEM_RECEIVED = "You received a %s from player %s!" + System.lineSeparator();
     private static final String ITEM_NOT_RECEIVED = "You failed to receive %s from player %s!" + System.lineSeparator();
-
 
     public static CommandResponse execute(String id, String... args) {
         if (areArgsInvalid(args)) {
