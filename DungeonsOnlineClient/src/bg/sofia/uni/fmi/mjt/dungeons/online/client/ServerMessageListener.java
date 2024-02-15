@@ -17,7 +17,6 @@ public class ServerMessageListener implements Runnable {
         while (true) {
             try {
                 if ((reply = reader.readLine()) != null) {
-                    //TODO how to handle the reply?
                     System.out.println(reply);
                 }
             } catch (IOException e) {

@@ -1,6 +1,9 @@
 package bg.sofia.uni.fmi.mjt.dungeons.online.server.command;
 
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.command.response.CommandResponse;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.exception.MaxCapacityReachedException;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.exception.NonexistentItemException;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.exception.PlayerNotFoundException;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.Player;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Position;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.DungeonMap;
@@ -11,7 +14,10 @@ public class Send {
     private static final String INVALID_TARGET = "Cannot send to player %s!" + System.lineSeparator();
     private static final String UNKNOWN_ITEM = "Item does not exist!" + System.lineSeparator();
     private static final String ITEM_SENT = "You sent a %s to player %s!" + System.lineSeparator();
+    private static final String ITEM_NOT_SENT = "You failed to send %s to player %s!" + System.lineSeparator();
     private static final String ITEM_RECEIVED = "You received a %s from player %s!" + System.lineSeparator();
+    private static final String ITEM_NOT_RECEIVED = "You failed to receive %s from player %s!" + System.lineSeparator();
+
 
     public static CommandResponse execute(String id, String... args) {
         if (areArgsInvalid(args)) {
@@ -27,20 +33,29 @@ public class Send {
 
         try {
             item = sender.getTreasureFromName(itemName);
-        } catch (Exception e) {
+        } catch (NonexistentItemException e) {
             return CommandResponse.of(id, UNKNOWN_ITEM);
         }
 
         int receiverNumber = Integer.parseInt(args[1].strip());
-        Player receiver = map.getPlayerFromNumber(receiverNumber);
+        Player receiver;
+        try {
+            receiver = map.getPlayerFromNumber(receiverNumber);
+        } catch (PlayerNotFoundException e) {
+            return CommandResponse.of(id, INVALID_TARGET);
+        }
 
-        //todo should be exception
         if (receiver == null) {
             return CommandResponse.of(id, String.format(INVALID_TARGET, receiverNumber));
         }
-
-        sender.getBackpack().remove(item); //todo should throw exception - handle
-        receiver.getBackpack().put(item);
+        try {
+            sender.getBackpack().remove(item);
+            receiver.getBackpack().put(item);
+        } catch (MaxCapacityReachedException | NonexistentItemException e) {
+            response.addResponse(id, ITEM_NOT_SENT);
+            response.addResponse(receiver.getId(), ITEM_NOT_RECEIVED);
+            return response;
+        }
 
         response.addResponse(id, String.format(ITEM_SENT, itemName, receiverNumber));
         response.addResponse(receiver.getId(), String.format(ITEM_RECEIVED, itemName, map.getPlayerNumber(id)));

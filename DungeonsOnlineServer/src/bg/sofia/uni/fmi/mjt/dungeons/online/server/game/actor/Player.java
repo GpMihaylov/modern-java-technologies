@@ -1,5 +1,9 @@
 package bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor;
 
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.exception.InsufficientLevelException;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.exception.InsufficientXpException;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.exception.MaxCapacityReachedException;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.exception.NonexistentItemException;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.inventory.Backpack;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Position;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Stats;
@@ -26,6 +30,9 @@ public class Player extends AbstractActor {
     private static final int MANA_MODIFIER = 10;
     private static final int ATTACK_MODIFIER = 5;
     private static final int DEFENCE_MODIFIER = 5;
+
+    private static final String NO_ITEM = "No such item in backpack";
+
     private final String id;
 
     private final Backpack backpack;
@@ -34,9 +41,9 @@ public class Player extends AbstractActor {
     public Player(String id) {
         this.id = id;
         position = new Position(0, 0);
-        initBaseStats();
         backpack = new Backpack();
         weapon = Optional.empty();
+        initBaseStats();
     }
 
     @Override
@@ -48,7 +55,7 @@ public class Player extends AbstractActor {
     @Override
     public void loseHealth(int amount) {
         if (amount <= 0) {
-            //todo exception
+            throw new IllegalArgumentException("Cannot lose negative amount of health");
         }
         stats.setHealth(stats.getHealth() + stats.getDefense() - amount);
 
@@ -72,32 +79,8 @@ public class Player extends AbstractActor {
             stats.setXpToNextLevel(EXPERIENCE_INCREASE_PER_LEVEL * stats.getLevel());
             stats.setLevel(stats.getLevel() + 1);
         } else {
-            //todo exception
+            throw new InsufficientXpException("Not enough experience to level up");
         }
-    }
-
-    public void useHealthPotion(HealthPotion potion) {
-        if (backpack.contains(potion)) {
-            heal(potion.getHealthPoints());
-            backpack.remove(potion);
-        }
-    }
-
-    public void useManaPotion(ManaPotion potion) {
-        if (backpack.contains(potion)) {
-            gainMana(potion.getManaPoints());
-            backpack.remove(potion);
-        }
-    }
-
-    private void heal(int amount) {
-        int maxHealth = BASE_HEALTH + stats.getLevel() * HEALTH_MODIFIER;
-        stats.setHealth(Math.min(stats.getHealth() + amount, maxHealth));
-    }
-
-    private void gainMana(int amount) {
-        int maxMana = BASE_MANA + stats.getLevel() * MANA_MODIFIER;
-        stats.setMana(Math.min(stats.getMana() + amount, maxMana));
     }
 
     @Override
@@ -108,9 +91,77 @@ public class Player extends AbstractActor {
         stats.setDefense(getStats().getDefense() + DEFENCE_MODIFIER);
     }
 
+    public void useHealthPotion(HealthPotion potion) throws InsufficientLevelException, NonexistentItemException {
+        handleNullObjects(potion);
+        validateItemLevel(potion);
+
+        if (backpack.contains(potion)) {
+            heal(potion.getHealthPoints());
+            backpack.remove(potion);
+        } else {
+            throw new NonexistentItemException(NO_ITEM);
+        }
+    }
+
+    public void useManaPotion(ManaPotion potion) throws InsufficientLevelException, NonexistentItemException {
+        handleNullObjects(potion);
+        validateItemLevel(potion);
+
+        if (backpack.contains(potion)) {
+            gainMana(potion.getManaPoints());
+            backpack.remove(potion);
+        } else {
+            throw new NonexistentItemException(NO_ITEM);
+        }
+    }
+
+    private void heal(int amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Health gain must be positive");
+        }
+        int maxHealth = BASE_HEALTH + stats.getLevel() * HEALTH_MODIFIER;
+        stats.setHealth(Math.min(stats.getHealth() + amount, maxHealth));
+    }
+
+    private void gainMana(int amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Mana gain must be positive");
+        }
+        int maxMana = BASE_MANA + stats.getLevel() * MANA_MODIFIER;
+        stats.setMana(Math.min(stats.getMana() + amount, maxMana));
+    }
+
+    public void equipWeapon(Weapon weapon)
+        throws InsufficientLevelException, NonexistentItemException, MaxCapacityReachedException {
+        validateItemLevel(weapon);
+
+        if (backpack.contains(weapon)) {
+            sendCurrentWeaponToBackpack();
+
+            backpack.remove(weapon);
+            this.weapon = Optional.of(weapon);
+            stats.setAttack(stats.getAttack() + weapon.getAttack());
+        } else {
+            throw new NonexistentItemException(NO_ITEM);
+        }
+    }
+
+    private void validateItemLevel(Treasure item) throws InsufficientLevelException {
+        if (item.getLevel() > getStats().getLevel()) {
+            throw new InsufficientLevelException("Insufficient player level");
+        }
+    }
+
+    private void sendCurrentWeaponToBackpack() throws MaxCapacityReachedException {
+        this.weapon.ifPresent(value -> stats.setAttack(stats.getAttack() - value.getAttack()));
+        if (weapon.isPresent()) {
+            backpack.put(weapon.get());
+        }
+    }
+
     public void gainExperience(int experience) {
         if (experience <= 0) {
-            //todo exception
+            throw new IllegalArgumentException("Experience gain must be positive");
         }
         stats.setExperience(stats.getExperience() + experience);
         if (stats.getExperience() >= stats.getXpToNextLevel()) {
@@ -118,36 +169,35 @@ public class Player extends AbstractActor {
         }
     }
 
-    public void pickUpItem(Treasure item) {
-        if (item.getLevel() > getStats().getLevel()) {
-            //todo exception
-        }
+    public void pickUpItem(Treasure item) throws MaxCapacityReachedException {
+        handleNullObjects(item);
         backpack.put(item);
         DungeonMap.getInstance().removeItem(item);
-    }
-
-    public void equipWeapon(Weapon weapon) {
-        sendCurrentWeaponToBackpack();
-
-        backpack.remove(weapon);
-        this.weapon = Optional.of(weapon);
-        stats.setAttack(stats.getAttack() + weapon.getAttack());
-    }
-
-    private void sendCurrentWeaponToBackpack() {
-        this.weapon.ifPresent(value -> stats.setAttack(stats.getAttack() - value.getAttack()));
-        this.weapon.ifPresent(backpack::put);
     }
 
     public Backpack getBackpack() {
         return backpack;
     }
 
-    public Treasure getTreasureFromName(String name) {
+    public Treasure getTreasureFromName(String name) throws NonexistentItemException {
+        handleNullObjects(name);
+        handleEmptyString(name);
         return backpack.get(name);
     }
 
     public String getId() {
         return id;
+    }
+
+    private void handleEmptyString(String s) {
+        if (s.isEmpty() || s.isBlank()) {
+            throw new IllegalArgumentException("String must not be empty or blank");
+        }
+    }
+
+    private void handleNullObjects(Object o) {
+        if (o == null) {
+            throw new IllegalArgumentException("Object cannot be null");
+        }
     }
 }

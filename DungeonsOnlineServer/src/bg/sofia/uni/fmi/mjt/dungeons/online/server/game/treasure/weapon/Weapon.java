@@ -1,5 +1,9 @@
 package bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.weapon;
 
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.exception.InsufficientLevelException;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.exception.InsufficientManaCostException;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.exception.MaxCapacityReachedException;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.exception.NonexistentItemException;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.Player;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Position;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.Treasure;
@@ -16,11 +20,9 @@ public class Weapon extends Treasure {
     }
 
     @Override
-    public void use(Player player) {
-        if (getLevel() > player.getStats().getLevel()) {
-            //todo exception + handle
-        }
-        player.equipWeapon(this); //todo should throw exception
+    public void use(Player player)
+        throws InsufficientLevelException, NonexistentItemException, MaxCapacityReachedException {
+        player.equipWeapon(this);
     }
 
     public int getAttack() {

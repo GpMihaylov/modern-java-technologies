@@ -20,8 +20,8 @@ public class Move {
         Player player = DungeonMap.getInstance().getPlayer(id);
         String direction = args[0].strip();
 
-        Position oldPosition = new Position(player.getPosition().getX(),
-            player.getPosition().getY());
+        Position oldPosition = new Position(player.getPosition().x(),
+            player.getPosition().y());
 
         Position newPosition = calculateNewPosition(player, direction);
         if (newPosition == null) {
@@ -43,8 +43,8 @@ public class Move {
     }
 
     private static Position calculateNewPosition(Player player, String direction) {
-        int currX = player.getPosition().getX();
-        int currY = player.getPosition().getY();
+        int currX = player.getPosition().x();
+        int currY = player.getPosition().y();
 
         int newX = currX;
         int newY = currY;
@@ -55,7 +55,6 @@ public class Move {
             case "left" -> newY--;
             case "right" -> newY++;
             default -> {
-                //todo handle better?
                 return null;
             }
         }
@@ -63,8 +62,8 @@ public class Move {
     }
 
     private static boolean isValidPosition(Position position) {
-        return position.getX() >= 0 && position.getX() < DungeonMap.WIDTH &&
-            position.getY() >= 0 && position.getY() < DungeonMap.HEIGHT &&
+        return position.x() >= 0 && position.x() < DungeonMap.WIDTH &&
+            position.y() >= 0 && position.y() < DungeonMap.HEIGHT &&
             !DungeonMap.getInstance().isObstacle(position);
     }
 

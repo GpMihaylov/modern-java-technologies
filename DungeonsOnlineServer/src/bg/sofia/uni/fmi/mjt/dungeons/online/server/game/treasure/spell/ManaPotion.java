@@ -1,5 +1,8 @@
 package bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.spell;
 
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.exception.InsufficientLevelException;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.exception.InsufficientManaCostException;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.exception.NonexistentItemException;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.Player;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Position;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.TreasureType;
@@ -15,10 +18,11 @@ public class ManaPotion extends Spell {
     }
 
     @Override
-    public void use(Player player) {
+    public void use(Player player)
+        throws InsufficientLevelException, NonexistentItemException, InsufficientManaCostException {
         if (getManaCost() > player.getStats().getMana()
             || getLevel() > player.getStats().getLevel()) {
-            //todo exception + handle
+            throw new InsufficientManaCostException("Insufficient mana; cannot use");
         }
         player.useManaPotion(this);
     }

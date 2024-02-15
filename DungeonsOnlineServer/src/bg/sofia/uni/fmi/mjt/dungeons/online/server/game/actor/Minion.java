@@ -11,7 +11,7 @@ public class Minion extends AbstractActor {
 
     public Minion(Position position) {
         initBaseStats();
-        this.position = new Position(position.getX(), position.getY());
+        this.position = new Position(position.x(), position.y());
     }
 
     @Override

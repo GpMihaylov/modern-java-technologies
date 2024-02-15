@@ -20,8 +20,7 @@ public abstract class AbstractActor implements Actor {
 
     @Override
     public void setPosition(Position newPosition) {
-        position.setX(newPosition.getX());
-        position.setY(newPosition.getY());
+        position = new Position(newPosition.x(), newPosition.y());
     }
 
 }

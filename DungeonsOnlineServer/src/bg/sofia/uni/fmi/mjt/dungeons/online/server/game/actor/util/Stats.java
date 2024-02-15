@@ -54,8 +54,6 @@ public class Stats {
         return xpToNextLevel;
     }
 
-    //todo validation
-
     public void setHealth(int health) {
         this.health = health;
     }
