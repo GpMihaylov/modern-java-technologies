@@ -40,18 +40,15 @@ public class Send {
         try {
             receiver = map.getPlayerFromNumber(receiverNumber);
         } catch (PlayerNotFoundException e) {
-            return CommandResponse.of(id, INVALID_TARGET);
-        }
-
-        if (receiver == null) {
             return CommandResponse.of(id, String.format(INVALID_TARGET, receiverNumber));
         }
+
         try {
             sender.getBackpack().remove(item);
             receiver.getBackpack().put(item);
         } catch (MaxCapacityReachedException | NonexistentItemException e) {
-            response.addResponse(id, ITEM_NOT_SENT);
-            response.addResponse(receiver.getId(), ITEM_NOT_RECEIVED);
+            response.addResponse(id, String.format(ITEM_NOT_SENT, itemName, receiver));
+            response.addResponse(receiver.getId(), String.format(ITEM_NOT_RECEIVED, itemName, sender));
             return response;
         }
 

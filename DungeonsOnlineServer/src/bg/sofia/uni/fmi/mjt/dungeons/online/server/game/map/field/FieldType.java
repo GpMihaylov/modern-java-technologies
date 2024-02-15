@@ -27,13 +27,4 @@ public enum FieldType {
         return symbol;
     }
 
-    public static FieldType of(String input) {
-        for (FieldType type : FieldType.values()) {
-            if (type.symbol.equals(input)) {
-                return type;
-            }
-        }
-        throw new IllegalArgumentException("No matching FieldType for input: " + input);
-    }
-
 }

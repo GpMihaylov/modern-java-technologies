@@ -13,14 +13,14 @@ import java.nio.channels.SocketChannel;
 
 public class CommandExecutor {
 
-    private static final String MOVE = "move";
-    private static final String PICK_UP = "pickup";
-    private static final String USE = "use";
-    private static final String ATTACK = "attack";
-    private static final String STATS = "stats";
-    private static final String INVENTORY = "inventory";
-    private static final String SEND = "send";
-    private static final String INVALID_COMMAND = "No such command exists!" + System.lineSeparator();
+    public static final String MOVE = "move";
+    public static final String PICK_UP = "pickup";
+    public static final String USE = "use";
+    public static final String ATTACK = "attack";
+    public static final String STATS = "stats";
+    public static final String INVENTORY = "inventory";
+    public static final String SEND = "send";
+    public static final String INVALID_COMMAND = "No such command exists!" + System.lineSeparator();
 
     public CommandResponse execute(Command cmd, SocketChannel socketChannel) {
         String id = socketChannel.socket().getRemoteSocketAddress().toString();

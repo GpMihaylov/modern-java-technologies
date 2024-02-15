@@ -30,13 +30,13 @@ public class DungeonMap {
     public static final int HEIGHT = 9;
     public static final int MINION_COUNT = 6;
     public static final int ITEMS_COUNT = 9;
-    private static final int BASE_EXPERIENCE_FROM_MINION = 100;
-    private static final int MIN_ITEM_LEVEL = 1;
-    private static final int MAX_ITEM_LEVEL = 5;
-    private static final int BASE_WEAPON_ATTACK = 30;
-    private static final int BASE_POTION_COST = 20;
-    private static final int BASE_POTION_AMOUNT = 30;
-    private static final int MODIFIER = 5;
+    public static final int BASE_EXPERIENCE_FROM_MINION = 100;
+    public static final int MIN_ITEM_LEVEL = 1;
+    public static final int MAX_ITEM_LEVEL = 5;
+    public static final int BASE_WEAPON_ATTACK = 30;
+    public static final int BASE_POTION_COST = 20;
+    public static final int BASE_POTION_AMOUNT = 30;
+    public static final int MODIFIER = 5;
 
     private final Field[][] map;
 
@@ -174,9 +174,7 @@ public class DungeonMap {
     }
 
     public void addPlayer(String id) {
-        if (id == null) {
-            throw new IllegalArgumentException("Player id must not be null");
-        }
+        validateId(id);
         players.put(id, new Player(id));
         playerNumbers.put(id, players.size());
 
@@ -192,9 +190,6 @@ public class DungeonMap {
     private void validateId(String id) {
         if (id == null) {
             throw new IllegalArgumentException("Player id must not be null");
-        }
-        if (!players.containsKey(id)) {
-            throw new IllegalArgumentException("This player does not exist");
         }
     }
 
@@ -320,5 +315,17 @@ public class DungeonMap {
         treasure.put(position, item);
         map[position.x()][position.y()] = Field.of(FieldType.TREASURE);
         restorePlayerIconOnPosition(position);
+    }
+
+    public Map<String, Player> getPlayers() {
+        return players;
+    }
+
+    public Map<Position, Minion> getMinions() {
+        return minions;
+    }
+
+    public Map<Position, Treasure> getTreasure() {
+        return treasure;
     }
 }

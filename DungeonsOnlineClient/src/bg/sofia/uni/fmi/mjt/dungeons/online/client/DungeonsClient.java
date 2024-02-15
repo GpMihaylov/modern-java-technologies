@@ -49,7 +49,7 @@ public class DungeonsClient {
                 }
             }
         } catch (IOException e) {
-            throw new RuntimeException("Oops! A problem with the network communication occurred", e);
+            throw new RuntimeException("A problem with the network communication occurred", e);
         }
     }
 

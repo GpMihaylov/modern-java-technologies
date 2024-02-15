@@ -1,6 +1,7 @@
 package bg.sofia.uni.fmi.mjt.dungeons.online.server.command;
 
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.command.response.CommandResponse;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.exception.PlayerNotFoundException;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.Minion;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.Player;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Position;
@@ -9,16 +10,20 @@ import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.DungeonMap;
 import java.util.List;
 
 public class Attack {
-    private static final String MISS = "You did not hit anything!" + System.lineSeparator();
-    private static final String DEFENDER_HIT = "You were attacked by player %s! " +
+    public static final String MISS = "You did not hit anything!" + System.lineSeparator();
+    public static final String DEFENDER_HIT = "You were attacked by player %s! " +
         "You lose %s health!" + System.lineSeparator();
-    private static final String DAMAGE_DEALT = "You dealt %s damage to %s!" + System.lineSeparator();
+    public static final String DAMAGE_DEALT = "You dealt %s damage to %s!" + System.lineSeparator();
 
     public static CommandResponse execute(String id) {
         CommandResponse response = new CommandResponse();
         DungeonMap map = DungeonMap.getInstance();
 
         Player attacker = map.getPlayer(id);
+        if (attacker == null) {
+            throw new IllegalArgumentException("Attacker with id " + id + " not found");
+        }
+
         Position position = attacker.getPosition();
         int attackStat = attacker.getStats().getAttack();
 
@@ -31,7 +36,11 @@ public class Attack {
             return CommandResponse.of(id, MISS);
         }
 
-        response.attachStatsHeader(id);
+        try {
+            response.attachStatsHeader(id);
+        } catch (PlayerNotFoundException e) {
+            throw new IllegalArgumentException("Player with this id does not exist", e);
+        }
         return response;
     }
 
@@ -49,14 +58,16 @@ public class Attack {
                 continue;
             }
             int defenderNumber = map.getPlayerNumber(defender.getId());
-
             defender.loseHealth(attackStat);
             int lostHealth = attackStat - defender.getStats().getDefense();
 
-            response.addResponse(defender.getId(),
-                    String.format(DEFENDER_HIT, attackerNumber, lostHealth))
-                .attachStatsHeader(defender.getId());
-
+            try {
+                response.addResponse(defender.getId(),
+                        String.format(DEFENDER_HIT, attackerNumber, lostHealth))
+                    .attachStatsHeader(defender.getId());
+            }  catch (PlayerNotFoundException e) {
+                throw new IllegalArgumentException("Player with this id does not exist", e);
+            }
             response.addResponse(attacker.getId(),
                 String.format(DAMAGE_DEALT, lostHealth, "player " + defenderNumber));
 

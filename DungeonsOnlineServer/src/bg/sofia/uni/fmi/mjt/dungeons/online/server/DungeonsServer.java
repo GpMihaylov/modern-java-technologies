@@ -24,6 +24,7 @@ public class DungeonsServer {
     private static final int BUFFER_SIZE = 1024;
     private static final String HOST = "localhost";
     private static final int SERVER_PORT = 1337;
+    private static final int MAX_CLIENTS = 9;
 
     private final CommandExecutor commandExecutor;
 
@@ -61,25 +62,7 @@ public class DungeonsServer {
 
                     Iterator<SelectionKey> keyIterator = selector.selectedKeys().iterator();
                     while (keyIterator.hasNext()) {
-                        SelectionKey key = keyIterator.next();
-                        if (key.isReadable()) {
-                            SocketChannel clientChannel = (SocketChannel) key.channel();
-                            String clientInput = getClientInput(clientChannel);
-
-                            if (clientInput == null) {
-                                continue;
-                            }
-
-                            CommandResponse response = commandExecutor
-                                .execute(CommandCreator.newCommand(clientInput), clientChannel);
-
-                            writeClientOutputResponse(response);
-
-                            broadcastMap();
-                        } else if (key.isAcceptable()) {
-                            accept(selector, key);
-                        }
-                        keyIterator.remove();
+                        handleClients(keyIterator);
                     }
                 } catch (IOException e) {
                     System.out.println("Error occurred while processing client request: " + e.getMessage());
@@ -88,6 +71,34 @@ public class DungeonsServer {
         } catch (IOException e) {
             throw new UncheckedIOException("Failed to start server", e);
         }
+    }
+
+    private void handleClients(Iterator<SelectionKey> keyIterator) throws IOException {
+        SelectionKey key = keyIterator.next();
+        if (key.isReadable()) {
+            SocketChannel clientChannel = (SocketChannel) key.channel();
+            String clientInput = getClientInput(clientChannel);
+
+            if (clientInput == null) {
+                return;
+            }
+            respondToClient(clientInput, clientChannel);
+        } else if (key.isAcceptable()) {
+            if (connectedClients.size() >= MAX_CLIENTS) {
+                return;
+            }
+            accept(selector, key);
+        }
+        keyIterator.remove();
+    }
+
+    private void respondToClient(String clientInput, SocketChannel clientChannel) {
+        CommandResponse response = commandExecutor
+            .execute(CommandCreator.newCommand(clientInput), clientChannel);
+
+        writeClientOutputResponse(response);
+
+        broadcastMap();
     }
 
     public void stop() {
@@ -190,7 +201,8 @@ public class DungeonsServer {
         connectedClients.put(id, accept);
         DungeonMap.getInstance().addPlayer(id);
 
-        writeClientOutputResponse(CommandResponse.of(id, "You are player " + DungeonMap.getInstance().getPlayerNumber(id)
+        writeClientOutputResponse(CommandResponse.of(id, "You are player "
+            + DungeonMap.getInstance().getPlayerNumber(id)
             + "! Happy dungeon dwelling!" + System.lineSeparator()));
 
         broadcastMap();

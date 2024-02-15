@@ -1,5 +1,6 @@
 package bg.sofia.uni.fmi.mjt.dungeons.online.server.command.response;
 
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.exception.PlayerNotFoundException;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.DungeonMap;
 
 import java.util.HashMap;
@@ -36,8 +37,12 @@ public class CommandResponse {
         return responses;
     }
 
-    public CommandResponse attachStatsHeader(String id) {
-        String stats = DungeonMap.getInstance().getPlayerStats(id).toString();
-        return addResponse(id, stats);
+    public CommandResponse attachStatsHeader(String id) throws PlayerNotFoundException {
+        if (DungeonMap.getInstance().getPlayerStats(id) != null) {
+            String stats = DungeonMap.getInstance().getPlayerStats(id).toString();
+            return addResponse(id, stats);
+        } else {
+            throw new PlayerNotFoundException("Player with this id does not exist");
+        }
     }
 }

@@ -17,21 +17,21 @@ import java.util.Optional;
 
 public class Player extends AbstractActor {
 
-    private static final int BASE_HEALTH = 100;
-    private static final int BASE_MANA = 100;
-    private static final int BASE_ATTACK = 10;
-    private static final int BASE_DEFENSE = 10;
-    private static final int BASE_LEVEL = 1;
-    private static final int BASE_EXPERIENCE = 0;
-    private static final int BASE_EXPERIENCE_NEEDED = 100;
-    private static final int EXPERIENCE_MODIFIER = 2;
-    private static final int EXPERIENCE_INCREASE_PER_LEVEL = BASE_EXPERIENCE_NEEDED * EXPERIENCE_MODIFIER;
-    private static final int HEALTH_MODIFIER = 10;
-    private static final int MANA_MODIFIER = 10;
-    private static final int ATTACK_MODIFIER = 5;
-    private static final int DEFENCE_MODIFIER = 5;
+    public static final int BASE_HEALTH = 100;
+    public static final int BASE_MANA = 100;
+    public static final int BASE_ATTACK = 10;
+    public static final int BASE_DEFENSE = 10;
+    public static final int BASE_LEVEL = 1;
+    public static final int BASE_EXPERIENCE = 0;
+    public static final int BASE_EXPERIENCE_NEEDED = 100;
+    public static final int EXPERIENCE_MODIFIER = 2;
+    public static final int EXPERIENCE_INCREASE_PER_LEVEL = BASE_EXPERIENCE_NEEDED * EXPERIENCE_MODIFIER;
+    public static final int HEALTH_MODIFIER = 10;
+    public static final int MANA_MODIFIER = 10;
+    public static final int ATTACK_MODIFIER = 5;
+    public static final int DEFENCE_MODIFIER = 5;
 
-    private static final String NO_ITEM = "No such item in backpack";
+    public static final String NO_ITEM = "No such item in backpack";
 
     private final String id;
 
@@ -66,9 +66,11 @@ public class Player extends AbstractActor {
     }
 
     private void dropRandomItem() {
-        Treasure itemToBeRemoved = backpack.getRandomItem();
+        if (!backpack.isEmpty()) {
+            Treasure itemToBeRemoved = backpack.getRandomItem();
 
-        DungeonMap.getInstance().placeItemOnPosition(itemToBeRemoved, itemToBeRemoved.getPosition());
+            DungeonMap.getInstance().placeItemOnPosition(itemToBeRemoved, itemToBeRemoved.getPosition());
+        }
     }
 
     @Override
@@ -189,6 +191,10 @@ public class Player extends AbstractActor {
         return id;
     }
 
+    public Optional<Weapon> getWeapon() {
+        return weapon;
+    }
+
     private void handleEmptyString(String s) {
         if (s.isEmpty() || s.isBlank()) {
             throw new IllegalArgumentException("String must not be empty or blank");
@@ -200,4 +206,5 @@ public class Player extends AbstractActor {
             throw new IllegalArgumentException("Object cannot be null");
         }
     }
+
 }
