@@ -11,7 +11,7 @@ import java.util.List;
 public class Attack {
 //todo after killing minion second time, stats became way too high, find cause
     private static final String MISS = "You did not hit anything!" + System.lineSeparator();
-    private static final String DEFENDER_HIT = "You were attacked by %s! You lose %s health!" + System.lineSeparator();
+    private static final String DEFENDER_HIT = "You were attacked by player %s! You lose %s health!" + System.lineSeparator();
     private static final String DAMAGE_DEALT = "You dealt %s damage to %s!" + System.lineSeparator();
 
     public static CommandResponse execute(String id) {
@@ -58,7 +58,7 @@ public class Attack {
                 .attachStatsHeader(defender.getId());
 
             response.addResponse(attacker.getId(),
-                String.format(DAMAGE_DEALT, lostHealth, defenderNumber));
+                String.format(DAMAGE_DEALT, lostHealth, "player " + defenderNumber));
 
             hits++;
         }

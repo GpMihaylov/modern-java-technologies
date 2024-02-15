@@ -59,7 +59,9 @@ public class Player extends AbstractActor {
     }
 
     private void dropRandomItem() {
-        backpack.dropRandomItem();
+        Treasure itemToBeRemoved = backpack.getRandomItem();
+
+        DungeonMap.getInstance().placeItemOnPosition(itemToBeRemoved, itemToBeRemoved.getPosition());
     }
 
     @Override

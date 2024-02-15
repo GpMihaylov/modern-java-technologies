@@ -22,8 +22,7 @@ import java.util.Random;
 import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_COORDINATES;
 
 public class DungeonMap {
-//todo remove picked up items
-    //todo remove item on player death
+    //todo cannot use item above player level
     private static volatile DungeonMap instance;
 
     public static final int WIDTH = 9;
@@ -31,6 +30,7 @@ public class DungeonMap {
     public static final int MINION_COUNT = 6;
     public static final int ITEMS_COUNT = 9;
     private static final int BASE_EXPERIENCE_FROM_MINION = 100;
+    private static final int MIN_ITEM_LEVEL = 1;
     private static final int MAX_ITEM_LEVEL = 5;
     private static final int BASE_WEAPON_ATTACK = 30;
     private static final int BASE_POTION_COST = 20;
@@ -93,12 +93,12 @@ public class DungeonMap {
         for (int[] obstacle : OBSTACLE_COORDINATES) {
             int x = obstacle[0];
             int y = obstacle[1];
-            setObstacle(x, y);
+            setObstacle(new Position(x, y));
         }
     }
 
-    private void setObstacle(int x, int y) {
-        map[x][y] = Field.of(FieldType.OBSTACLE);
+    private void setObstacle(Position position) {
+        map[position.getX()][position.getY()] = Field.of(FieldType.OBSTACLE);
     }
 
     private void initMinions() {
@@ -128,12 +128,11 @@ public class DungeonMap {
     private void initTreasure() {
         for (int i = 0; i < ITEMS_COUNT; i++) {
             Position itemPosition = getRandomUnoccupiedPosition();
-            setTreasure(itemPosition);
-
+            setRandomTreasureOnPosition(itemPosition);
         }
     }
 
-    private void setTreasure(Position position) {
+    private void setRandomTreasureOnPosition(Position position) {
         Map.Entry<TreasureType, String> itemTypeAndName = generateRandomItemTypeAndName();
 
         TreasureType itemType = itemTypeAndName.getKey();
@@ -166,7 +165,7 @@ public class DungeonMap {
 
     private int generateRandomItemLevel() {
         Random rand = new Random();
-        return rand.nextInt(MAX_ITEM_LEVEL);
+        return rand.nextInt(MIN_ITEM_LEVEL, MAX_ITEM_LEVEL);
     }
 
     public Field getField(Position p) {
@@ -312,6 +311,12 @@ public class DungeonMap {
         Position position = minion.getPosition();
         minions.put(position, minion);
         map[position.getX()][position.getY()].setType(FieldType.MINION);
+        restorePlayerIconOnPosition(position);
+    }
+
+    public void placeItemOnPosition(Treasure item, Position position) {
+        treasure.put(position, item);
+        map[position.getX()][position.getY()] = Field.of(FieldType.TREASURE);
         restorePlayerIconOnPosition(position);
     }
 }

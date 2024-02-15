@@ -59,16 +59,17 @@ public class Backpack {
         return null;
     }
 
-    public void dropRandomItem() {
+    public Treasure getRandomItem() {
         if (!isEmpty()) {
             List<Treasure> backpackList = new ArrayList<>(items);
 
             Random random = new Random();
             int indexToRemove = random.nextInt(backpackList.size());
 
-            remove(backpackList.get(indexToRemove));
+            return backpackList.get(indexToRemove);
         } else {
             //todo exception
+            throw new UnsupportedOperationException("not implemented");
         }
     }
 }
