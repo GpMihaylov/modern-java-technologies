@@ -2,6 +2,7 @@ package bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor;
 
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Position;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Stats;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.DungeonMap;
 
 public class Minion extends AbstractActor {
     private static final int BASE_HEALTH = 20;
@@ -34,7 +35,7 @@ public class Minion extends AbstractActor {
     private void handleDeath() {
         stats.setHealth(BASE_HEALTH);
         levelUp();
-        //todo random position
+        DungeonMap.getInstance().randomizeMinionPosition(this);
     }
 
     @Override

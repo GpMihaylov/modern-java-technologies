@@ -3,6 +3,7 @@ package bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.inventory.Backpack;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Position;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Stats;
+import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.DungeonMap;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.Treasure;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.spell.HealthPotion;
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.spell.ManaPotion;
@@ -105,14 +106,18 @@ public class Player extends AbstractActor {
         if (experience <= 0) {
             //todo exception
         }
-        stats.setExperience(experience);
+        stats.setExperience(stats.getExperience() + experience);
         if (stats.getExperience() >= stats.getXpToNextLevel()) {
             levelUp();
         }
     }
 
     public void pickUpItem(Treasure item) {
+        if (item.getLevel() > getStats().getLevel()) {
+            //todo exception
+        }
         backpack.put(item);
+        DungeonMap.getInstance().removeItem(item);
     }
 
     public void equipWeapon(Weapon weapon) {
@@ -126,14 +131,6 @@ public class Player extends AbstractActor {
     private void sendCurrentWeaponToBackpack() {
         this.weapon.ifPresent(value -> stats.setAttack(stats.getAttack() - value.getAttack()));
         this.weapon.ifPresent(backpack::put);
-    }
-
-    private void getWeaponFromBackpack(Weapon weapon) {
-        if (backpack.contains(weapon)) {
-            backpack.remove(weapon);
-        } else {
-            //todo exception
-        }
     }
 
     public Backpack getBackpack() {

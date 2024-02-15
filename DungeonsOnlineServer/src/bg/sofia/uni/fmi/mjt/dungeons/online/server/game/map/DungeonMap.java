@@ -14,50 +14,12 @@ import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.weapon.Weapon;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_10_X;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_10_Y;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_11_X;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_11_Y;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_12_X;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_12_Y;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_13_X;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_13_Y;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_14_X;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_14_Y;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_15_X;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_15_Y;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_16_X;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_16_Y;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_17_X;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_17_Y;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_18_X;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_18_Y;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_19_X;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_19_Y;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_1_X;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_1_Y;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_20_X;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_20_Y;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_2_X;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_2_Y;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_3_X;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_3_Y;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_4_X;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_4_Y;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_5_X;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_5_Y;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_6_X;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_6_Y;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_7_X;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_7_Y;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_8_X;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_8_Y;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_9_X;
-import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_9_Y;
+import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.ObstaclePositions.OBSTACLE_COORDINATES;
 
 public class DungeonMap {
 //todo remove picked up items
@@ -66,10 +28,10 @@ public class DungeonMap {
 
     public static final int WIDTH = 9;
     public static final int HEIGHT = 9;
-    public static final int MINION_COUNT = 4;
+    public static final int MINION_COUNT = 6;
     public static final int ITEMS_COUNT = 9;
-    private static final int BASE_EXPERIENCE_FROM_MINION = 50;
-    private static final int MAX_ITEM_LEVEL = 10;
+    private static final int BASE_EXPERIENCE_FROM_MINION = 100;
+    private static final int MAX_ITEM_LEVEL = 5;
     private static final int BASE_WEAPON_ATTACK = 30;
     private static final int BASE_POTION_COST = 20;
     private static final int BASE_POTION_AMOUNT = 30;
@@ -81,28 +43,6 @@ public class DungeonMap {
     private final Map<String, Integer> playerNumbers;
     private final Map<Position, Minion> minions;
     private final Map<Position, Treasure> treasure;
-    private static final int[][] OBSTACLE_COORDINATES = {
-        {OBSTACLE_1_X, OBSTACLE_1_Y},
-        {OBSTACLE_2_X, OBSTACLE_2_Y},
-        {OBSTACLE_3_X, OBSTACLE_3_Y},
-        {OBSTACLE_4_X, OBSTACLE_4_Y},
-        {OBSTACLE_5_X, OBSTACLE_5_Y},
-        {OBSTACLE_6_X, OBSTACLE_6_Y},
-        {OBSTACLE_7_X, OBSTACLE_7_Y},
-        {OBSTACLE_8_X, OBSTACLE_8_Y},
-        {OBSTACLE_9_X, OBSTACLE_9_Y},
-        {OBSTACLE_10_X, OBSTACLE_10_Y},
-        {OBSTACLE_11_X, OBSTACLE_11_Y},
-        {OBSTACLE_12_X, OBSTACLE_12_Y},
-        {OBSTACLE_13_X, OBSTACLE_13_Y},
-        {OBSTACLE_14_X, OBSTACLE_14_Y},
-        {OBSTACLE_15_X, OBSTACLE_15_Y},
-        {OBSTACLE_16_X, OBSTACLE_16_Y},
-        {OBSTACLE_17_X, OBSTACLE_17_Y},
-        {OBSTACLE_18_X, OBSTACLE_18_Y},
-        {OBSTACLE_19_X, OBSTACLE_19_Y},
-        {OBSTACLE_20_X, OBSTACLE_20_Y}
-    };
 
     public static DungeonMap getInstance() {
         if (instance == null) {
@@ -117,7 +57,7 @@ public class DungeonMap {
 
     private DungeonMap() {
         map = new Field[WIDTH][HEIGHT];
-        players = new HashMap<>();
+        players = new LinkedHashMap<>();
         playerNumbers = new HashMap<>();
         minions = new HashMap<>();
         treasure = new HashMap<>();
@@ -281,7 +221,7 @@ public class DungeonMap {
 
     public void updatePlayerPosition(String id, Position oldPosition, Position newPosition) {
         validateId(id);
-        long playerNumber = playerNumbers.get(id);
+        int playerNumber = playerNumbers.get(id);
 
         map[newPosition.getX()][newPosition.getY()]
             .setType(FieldType.valueOf("PLAYER" + playerNumber));
@@ -347,4 +287,31 @@ public class DungeonMap {
         }
     }
 
+    public void removeItem(Treasure item) {
+        Position position = item.getPosition();
+        treasure.remove(position);
+        map[position.getX()][position.getY()].setType(FieldType.TREASURE);
+
+        restorePlayerIconOnPosition(position);
+    }
+
+    private void restorePlayerIconOnPosition(Position position) {
+        for (Player player :
+            players.values()) {
+            if (position.equals(player.getPosition())) {
+                map[position.getX()][position.getY()].setType(
+                    FieldType.valueOf("PLAYER" + getPlayerNumber(player.getId())));
+                break;
+            }
+        }
+    }
+
+    public void randomizeMinionPosition(Minion minion) {
+        minions.remove(minion.getPosition());
+        minion.setPosition(getRandomUnoccupiedPosition());
+        Position position = minion.getPosition();
+        minions.put(position, minion);
+        map[position.getX()][position.getY()].setType(FieldType.MINION);
+        restorePlayerIconOnPosition(position);
+    }
 }
