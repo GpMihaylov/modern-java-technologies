@@ -73,7 +73,7 @@ public class DungeonsServer {
                             CommandResponse response = commandExecutor
                                 .execute(CommandCreator.newCommand(clientInput), clientChannel);
 
-                            writeOutput(response);
+                            writeClientOutputResponse(response);
 
                             broadcastMap();
                         } else if (key.isAcceptable()) {
@@ -131,7 +131,7 @@ public class DungeonsServer {
 
     }
 
-    private void writeOutput(CommandResponse response) {
+    private void writeClientOutputResponse(CommandResponse response) {
         for (Map.Entry<String, String> entry : response.getResponses().entrySet()) {
             String id = entry.getKey();
             String clientResponse = entry.getValue();
@@ -139,14 +139,14 @@ public class DungeonsServer {
             SocketChannel clientChannel = connectedClients.get(id);
 
             try {
-                writeClientOutput(clientChannel, clientResponse);
+                writeClientOutputBuffer(clientChannel, clientResponse);
             } catch (IOException e) {
                 System.out.println("Error sending response to client " + id + ": " + e.getMessage());
             }
         }
     }
 
-    private void writeClientOutput(SocketChannel clientChannel, String output) throws IOException {
+    private void writeClientOutputBuffer(SocketChannel clientChannel, String output) throws IOException {
         buffer.clear();
         buffer.put(output.getBytes());
         buffer.flip();
@@ -182,11 +182,18 @@ public class DungeonsServer {
         accept.configureBlocking(false)
             .register(selector, SelectionKey.OP_READ);
 
+        initPlayer(accept);
+    }
+
+    private void initPlayer(SocketChannel accept) {
         String id = accept.socket().getRemoteSocketAddress().toString();
-
         connectedClients.put(id, accept);
-
         DungeonMap.getInstance().addPlayer(id);
+
+        writeClientOutputResponse(CommandResponse.of(id, "You are player " + DungeonMap.getInstance().getPlayerNumber(id)
+            + "! Happy dungeon dwelling!\n"));
+
+        broadcastMap();
     }
 
 }

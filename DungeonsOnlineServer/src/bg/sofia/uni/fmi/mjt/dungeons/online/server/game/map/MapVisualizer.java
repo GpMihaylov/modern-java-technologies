@@ -14,7 +14,7 @@ public class MapVisualizer {
             }
             mapString.append(System.lineSeparator());
         }
-
+        mapString.append(System.lineSeparator());
         return mapString.toString();
     }
 
