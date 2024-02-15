@@ -49,10 +49,8 @@ public class BackpackTest {
 
     @Test
     void testPutMaxCapacityReached() throws MaxCapacityReachedException {
-        Set<Treasure> items = new HashSet<>();
         for (int i = 0; i < 10; i++) {
             Weapon weapon = mock();
-            items.add(weapon);
             backpack.put(weapon);
         }
 

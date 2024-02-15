@@ -23,35 +23,34 @@ public class Send {
         }
         CommandResponse response = new CommandResponse();
         DungeonMap map = DungeonMap.getInstance();
-
         Player sender = map.getPlayer(id);
-
         String itemName = args[0].strip();
         Treasure item;
-
         try {
             item = sender.getTreasureFromName(itemName);
         } catch (NonexistentItemException e) {
             return CommandResponse.of(id, UNKNOWN_ITEM);
         }
-
         int receiverNumber = Integer.parseInt(args[1].strip());
-        Player receiver;
+        Player receiver = null;
         try {
             receiver = map.getPlayerFromNumber(receiverNumber);
-        } catch (PlayerNotFoundException e) {
-            return CommandResponse.of(id, String.format(INVALID_TARGET, receiverNumber));
-        }
-
-        try {
             sender.getBackpack().remove(item);
             receiver.getBackpack().put(item);
+        } catch (PlayerNotFoundException e) {
+            return CommandResponse.of(id, String.format(INVALID_TARGET, receiverNumber));
         } catch (MaxCapacityReachedException | NonexistentItemException e) {
-            response.addResponse(id, String.format(ITEM_NOT_SENT, itemName, receiver));
-            response.addResponse(receiver.getId(), String.format(ITEM_NOT_RECEIVED, itemName, sender));
+            response.addResponse(id, String.format(ITEM_NOT_SENT, itemName, receiver))
+                .addResponse(receiver.getId(), String.format(ITEM_NOT_RECEIVED, itemName, sender));
             return response;
         }
 
+        return getSuccessfulResponse(id, response, itemName, receiverNumber, receiver, map);
+    }
+
+    private static CommandResponse getSuccessfulResponse(String id, CommandResponse response,
+                                                         String itemName, int receiverNumber,
+                                                         Player receiver, DungeonMap map) {
         response.addResponse(id, String.format(ITEM_SENT, itemName, receiverNumber));
         response.addResponse(receiver.getId(), String.format(ITEM_RECEIVED, itemName, map.getPlayerNumber(id)));
 

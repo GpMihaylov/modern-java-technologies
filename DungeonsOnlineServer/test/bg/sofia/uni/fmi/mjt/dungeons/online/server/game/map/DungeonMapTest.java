@@ -16,12 +16,10 @@ import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.weapon.Weapon;
 
 import static bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.DungeonMap.BASE_EXPERIENCE_FROM_MINION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

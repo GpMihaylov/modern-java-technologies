@@ -1,22 +1,8 @@
 package bg.sofia.uni.fmi.mjt.dungeons.online.server.command.response;
 
-import bg.sofia.uni.fmi.mjt.dungeons.online.server.exception.PlayerNotFoundException;
-import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Stats;
-import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.map.DungeonMap;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-
-import java.net.Socket;
-import java.net.SocketAddress;
-import java.nio.channels.SocketChannel;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class CommandResponseTest {
 
