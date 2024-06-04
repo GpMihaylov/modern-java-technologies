@@ -1,9 +1,6 @@
 package bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure;
 
 import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.actor.util.Position;
-import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.spell.HealthPotion;
-import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.spell.ManaPotion;
-import bg.sofia.uni.fmi.mjt.dungeons.online.server.game.treasure.weapon.Weapon;
 
 import java.util.function.Supplier;
 

@@ -328,4 +328,5 @@ public class DungeonMap {
     public Map<Position, Treasure> getTreasure() {
         return treasure;
     }
+
 }

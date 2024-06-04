@@ -132,7 +132,7 @@ class DungeonMapTest {
     }
 
     @Test
-    void testRemoveItemNoTreasure() throws NonexistentItemException {
+    void testRemoveItemNoTreasure() {
         assertThrows(NonexistentItemException.class, () -> dungeonMap.getTreasureOnPosition(new Position(2, 4)));
     }
 

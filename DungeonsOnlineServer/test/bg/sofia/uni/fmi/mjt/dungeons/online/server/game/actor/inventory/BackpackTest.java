@@ -109,6 +109,6 @@ public class BackpackTest {
 
         Treasure result = backpack.getRandomItem();
 
-        assertTrue(result == weapon1 || result == weapon2);
+        assertTrue(result.equals(weapon1) || result.equals(weapon2));
     }
 }
